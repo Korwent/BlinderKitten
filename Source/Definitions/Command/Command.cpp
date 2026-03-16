@@ -25,6 +25,7 @@
 #include "Definitions/Preset/Preset.h"
 #include "Definitions/Fixture/Fixture.h"
 #include "Definitions/Group/Group.h"
+#include "Common/ColorEngine/ColorEngine.h"
 
 Command::Command(var params) :
 	BaseItem(params.getProperty("name", "Command")),

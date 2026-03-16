@@ -16,6 +16,7 @@
 #include "BKEngine.h"
 #include "Definitions/Programmer/Programmer.h"
 #include "Definitions/Layout/Layout.h"
+#include "../../Common/ColorEngine/ColorEngine.h"
 
 SubFixture::SubFixture() :
 	channelsMap()

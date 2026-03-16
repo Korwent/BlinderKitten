@@ -15,6 +15,9 @@
 // #include "Sequence/SequenceIncludes.h"
 // #include "Effect/EffectIncludes.h"
 
+#include "ColorEngine/ColorEngine.cpp"
+
+
 #include "Action/Action.cpp"
 #include "Action/ActionManager.cpp"
 

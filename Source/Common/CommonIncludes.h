@@ -65,3 +65,5 @@
 
 #include "NDI/ui/NDIDeviceChooser.h"
 #include "NDI/ui/NDIDeviceParameterUI.h"
+
+#include "ColorEngine/ColorEngine.h"

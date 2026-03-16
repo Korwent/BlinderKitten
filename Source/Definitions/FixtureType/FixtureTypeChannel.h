@@ -37,6 +37,11 @@ class FixtureTypeChannel:
     Point2DParameter* physicalRange;
     Automation curve;
 
+    // === Calibration data ===
+    ControllableContainer calibrationContainer;
+    Point2DParameter* calibrationCIExy;      // CIE xy chromaticity (x, y) of this emitter at 100%
+    FloatParameter* calibrationMaxIntensity;  // Luminous intensity in candela (cd) at DMX 255
+
     void onContainerParameterChangedInternal(Parameter* p);
     void onControllableFeedbackUpdateInternal(ControllableContainer* cc, Controllable* c) override;
 

@@ -37,6 +37,8 @@ DMXInterface::DMXInterface() :
 	dmxConnected->isControllableFeedbackOnly = true;
 	dmxConnected->isSavable = false;
 
+	useCalibration = addBoolParameter("Use Calibration", "Use calibrated color output for fixtures with color calibration data", false);
+
 	channelTestingMode = addBoolParameter("Channel Testing Mode", "Is testing with the Channel view ?", false);
 	channelTestingMode->hideInEditor = true;
 

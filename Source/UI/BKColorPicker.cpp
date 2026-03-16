@@ -13,6 +13,7 @@
 #include "UserInputManager.h"
 #include "BKEngine.h"
 #include "Definitions/Command/Command.h"
+#include "Common/ColorEngine/ColorEngine.h"
 //#include "Definitions/Command/Command.h"
 
 
@@ -175,6 +176,16 @@ void BKColorPicker::mouseSetColor(double x, double y)
     if (dynamic_cast<ChannelType*>(engine->CPRedChannel->targetContainer.get()) == nullptr) {
         engine -> autoFillDefaultChannels();
     }
+
+    // TODO: Phase 5 Enhancement - Integrate calibrated color solving
+    // When the color picker is used on a fixture with >=3 calibrated emitters,
+    // use ColorEngine::solveEmitterWeights() to compute accurate per-emitter DMX values
+    // This would require:
+    // 1. Access to the current Command and its selected SubFixtures
+    // 2. For each calibrated SubFixture, convert RGB to CIE XYZ
+    // 3. Apply ColorEngine::solveEmitterWeights() to get per-emitter weights
+    // 4. Convert weights to DMX levels and set individual emitter channels
+    // For now, the accurate color preview is handled in SubFixture::getOutputColor()
 
     if (engine->CPRedChannel->stringValue() != "") {
         ChannelType* redChannel = dynamic_cast<ChannelType*>(engine->CPRedChannel->targetContainer.get());

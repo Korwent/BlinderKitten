@@ -32,6 +32,7 @@ public:
     EnumParameter* dmxType;
     std::unique_ptr<DMXDevice> dmxDevice;
     BoolParameter* dmxConnected;
+    BoolParameter* useCalibration;  // Enable per-interface calibration coloring
 
     std::unique_ptr<ControllableContainer> thruManager;
     BoolParameter * channelTestingMode;

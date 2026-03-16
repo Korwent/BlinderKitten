@@ -930,7 +930,7 @@
     </VS2019>
     <VS2022 targetFolder="Builds/VisualStudio2022" smallIcon="qTJiMk" bigIcon="qTJiMk"
             externalLibraries="Setupapi.lib&#10;Servus.lib&#10;dnssd.lib"
-            extraCompilerFlags="/bigobj ">
+            extraCompilerFlags="/FS /bigobj ">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" headerPath="../../External/serial/include&#10;../../External/asio&#10;../../External/servus/include&#10;../../External/dnssd/include&#10;"
                        binaryPath="Binaries/Debug" libraryPath="../../External/servus/lib/win/x64/debug&#10;../../External/dnssd/lib&#10;../../External/NDI/lib/x64"
@@ -960,7 +960,7 @@
       </MODULEPATHS>
     </VS2022>
     <VS2022 targetFolder="Builds/VisualStudio2022_CI" externalLibraries="Setupapi.lib&#10;Servus.lib&#10;dnssd.lib"
-            smallIcon="qTJiMk" bigIcon="qTJiMk">
+            smallIcon="qTJiMk" bigIcon="qTJiMk" extraCompilerFlags="/FS /bigobj">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug"/>
         <CONFIGURATION isDebug="0" name="Release" binaryPath="Binaries/CI" headerPath="../../External/serial/include&#10;../../External/asio&#10;../../External/servus/include&#10;../../External/dnssd/include"
@@ -1109,7 +1109,7 @@
         <MODULEPATH id="juce_simpleweb" path="Modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
-    <VS2022 targetFolder="Builds/VisualStudio2022_Win7CI" extraCompilerFlags="/Zm1000 /bigobj"
+    <VS2022 targetFolder="Builds/VisualStudio2022_Win7CI" extraCompilerFlags="/Zm1000 /FS /bigobj"
             extraLinkerFlags="/HEAP:0x400000,0x10000" externalLibraries="Setupapi.lib&#10;hid.lib&#10;Servus.lib&#10;dnssd.lib&#10;iphlpapi.lib&#10;hid.lib&#10;hidapi_static.lib"
             smallIcon="qTJiMk" bigIcon="qTJiMk">
       <CONFIGURATIONS>

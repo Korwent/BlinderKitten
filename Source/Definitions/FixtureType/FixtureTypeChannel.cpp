@@ -21,7 +21,8 @@
 FixtureTypeChannel::FixtureTypeChannel(var params) :
     BaseItem(params.getProperty("name", "Channel")),
     objectType(params.getProperty("type", "FixtureTypeChannel").toString()),
-    objectData(params)
+    objectData(params),
+    calibrationContainer("Calibration")
 
 {
 
@@ -77,6 +78,23 @@ FixtureTypeChannel::FixtureTypeChannel(var params) :
 
 
     addChildControllableContainer(&curve);
+
+    // Calibration container
+    calibrationContainer.setNiceName("Calibration");
+    calibrationContainer.editorIsCollapsed = true;
+    calibrationContainer.editorCanBeCollapsed = true;
+    calibrationContainer.saveAndLoadRecursiveData = true;
+
+    calibrationCIExy = calibrationContainer.addPoint2DParameter("CIE xy", "CIE 1931 chromaticity coordinates (x, y) of this emitter at full intensity");
+    calibrationCIExy->setPoint(0.3127f, 0.3290f); // D65 white point as default
+    calibrationCIExy->canBeDisabledByUser = true;
+    calibrationCIExy->setEnabled(false);
+
+    calibrationMaxIntensity = calibrationContainer.addFloatParameter("Max Intensity (cd)", "Luminous intensity in candela at full DMX output", 0, 0, 10000);
+    calibrationMaxIntensity->canBeDisabledByUser = true;
+    calibrationMaxIntensity->setEnabled(false);
+
+    addChildControllableContainer(&calibrationContainer);
 
 
 };

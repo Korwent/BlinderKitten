@@ -1,4 +1,4 @@
-/*
+﻿/*
   ==============================================================================
 
 	Object.cpp
@@ -28,6 +28,8 @@
 #include "Definitions/Mapper/Mapper.h"
 #include "Definitions/Stamp/Stamp.h"
 #include "Definitions/SelectionMaster/SelectionMaster.h"
+#include "../../Common/ColorEngine/ColorEngine.h"
+#include "BKEngine.h"
 
 
 SubFixtureChannel::SubFixtureChannel():
@@ -183,6 +185,45 @@ void SubFixtureChannel::writeValue(float v) {
 						}
 					}
 
+					// Apply per-interface calibration coloring if enabled
+					if (out->useCalibration != nullptr && out->useCalibration->boolValue() && 
+					    parentSubFixture != nullptr && ColorEngine::hasCalibrationData(parentSubFixture)) {
+						
+						// Get the current color values from the fixture
+						BKEngine* engine = dynamic_cast<BKEngine*>(Engine::mainEngine);
+						if (engine != nullptr) {
+							ChannelType* redChannel = dynamic_cast<ChannelType*>(engine->CPRedChannel->targetContainer.get());
+							ChannelType* greenChannel = dynamic_cast<ChannelType*>(engine->CPGreenChannel->targetContainer.get());
+							ChannelType* blueChannel = dynamic_cast<ChannelType*>(engine->CPBlueChannel->targetContainer.get());
+							ChannelType* intensityChannel = dynamic_cast<ChannelType*>(engine->IntensityChannel->targetContainer.get());
+							
+							if (redChannel != nullptr && greenChannel != nullptr && blueChannel != nullptr) {
+								// Get current color channel values
+								float r = 0, g = 0, b = 0, intensity = 1;
+								if (parentSubFixture->channelsMap.contains(redChannel)) {
+									r = parentSubFixture->channelsMap.getReference(redChannel)->currentValue;
+								}
+								if (parentSubFixture->channelsMap.contains(greenChannel)) {
+									g = parentSubFixture->channelsMap.getReference(greenChannel)->currentValue;
+								}
+								if (parentSubFixture->channelsMap.contains(blueChannel)) {
+									b = parentSubFixture->channelsMap.getReference(blueChannel)->currentValue;
+								}
+								if (intensityChannel != nullptr && parentSubFixture->channelsMap.contains(intensityChannel)) {
+									intensity = parentSubFixture->channelsMap.getReference(intensityChannel)->currentValue;
+								}
+								
+								// Compute calibrated DMX levels for all emitters 
+								HashMap<SubFixtureChannel*, float> emitterDMXLevels;
+								ColorEngine::computeEmitterDMXLevels(parentSubFixture, r, g, b, intensity, emitterDMXLevels);
+								
+								// If this channel is in the calibrated results, use that value instead
+								if (emitterDMXLevels.contains(this)) {
+									localValue = emitterDMXLevels.getReference(this);
+								}
+							}
+						}
+					}
 
 					if (address > 0) {
 						address += (deltaAdress);
