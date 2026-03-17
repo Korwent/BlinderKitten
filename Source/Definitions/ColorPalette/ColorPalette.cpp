@@ -62,5 +62,5 @@ void ColorPalette::updateName()
     if (parentContainer != nullptr) {
         dynamic_cast<ColorPaletteManager*>(parentContainer.get())->reorderItems();
     }
-    setNiceName(String((int)id->getValue()) + " - " + userName->getValue());
+    setNiceName(String((int)id->getValue()) + " - " + userName->getValue().toString());
 }
