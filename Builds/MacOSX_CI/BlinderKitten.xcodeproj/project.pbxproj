@@ -221,6 +221,13 @@
 		FAAEAB583902B64AC95CCF00 /* FixtureManagerUI.cpp */ = {isa = PBXBuildFile; fileRef = 6AF6D8DD273039E83F5E3DA3; };
 		FB298395462FBA9AFF2D22E3 /* VirtualButton.cpp */ = {isa = PBXBuildFile; fileRef = D2C729583028F64B5519FA2C; };
 		FC0FCA9105E87941C073B155 /* Task.cpp */ = {isa = PBXBuildFile; fileRef = 8085FCC7884FFB62D8A17AC0; };
+		AA11BB22CC33DD44EE55FF01 /* ColorPalette.cpp */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF02; };
+		AA11BB22CC33DD44EE55FF04 /* ColorPaletteValue.cpp */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF05; };
+		AA11BB22CC33DD44EE55FF07 /* ColorPaletteManager.cpp */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF08; };
+		AA11BB22CC33DD44EE55FF10 /* ColorPaletteManagerUI.cpp */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF11; };
+		AA11BB22CC33DD44EE55FF13 /* ColorPaletteGridView.cpp */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF14; };
+		AA11BB22CC33DD44EE55FF16 /* CIEColorPicker.cpp */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF17; };
+		AA11BB22CC33DD44EE55FF19 /* ColorEngine.cpp */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF20; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -744,6 +751,20 @@
 		FE864E507EED71B60040AA83 /* CarouselStep.cpp */ /* CarouselStep.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CarouselStep.cpp; path = ../../Source/Definitions/Carousel/CarouselStep.cpp; sourceTree = SOURCE_ROOT; };
 		FF7466C6309D2447432F263C /* OSCInterface.h */ /* OSCInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OSCInterface.h; path = ../../Source/Definitions/Interface/interfaces/osc/OSCInterface.h; sourceTree = SOURCE_ROOT; };
 		FFF4E7DCB0B2FEC282BA69B7 /* SelectionMasterManagerUI.cpp */ /* SelectionMasterManagerUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SelectionMasterManagerUI.cpp; path = ../../Source/Definitions/SelectionMaster/SelectionMasterManagerUI.cpp; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF02 /* ColorPalette.cpp */ /* ColorPalette.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ColorPalette.cpp; path = ../../Source/Definitions/ColorPalette/ColorPalette.cpp; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF03 /* ColorPalette.h */ /* ColorPalette.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ColorPalette.h; path = ../../Source/Definitions/ColorPalette/ColorPalette.h; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF05 /* ColorPaletteValue.cpp */ /* ColorPaletteValue.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ColorPaletteValue.cpp; path = ../../Source/Definitions/ColorPalette/ColorPaletteValue.cpp; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF06 /* ColorPaletteValue.h */ /* ColorPaletteValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ColorPaletteValue.h; path = ../../Source/Definitions/ColorPalette/ColorPaletteValue.h; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF08 /* ColorPaletteManager.cpp */ /* ColorPaletteManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ColorPaletteManager.cpp; path = ../../Source/Definitions/ColorPalette/ColorPaletteManager.cpp; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF09 /* ColorPaletteManager.h */ /* ColorPaletteManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ColorPaletteManager.h; path = ../../Source/Definitions/ColorPalette/ColorPaletteManager.h; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF11 /* ColorPaletteManagerUI.cpp */ /* ColorPaletteManagerUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ColorPaletteManagerUI.cpp; path = ../../Source/Definitions/ColorPalette/ColorPaletteManagerUI.cpp; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF12 /* ColorPaletteManagerUI.h */ /* ColorPaletteManagerUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ColorPaletteManagerUI.h; path = ../../Source/Definitions/ColorPalette/ColorPaletteManagerUI.h; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF14 /* ColorPaletteGridView.cpp */ /* ColorPaletteGridView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ColorPaletteGridView.cpp; path = ../../Source/UI/GridView/ColorPaletteGridView.cpp; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF15 /* ColorPaletteGridView.h */ /* ColorPaletteGridView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ColorPaletteGridView.h; path = ../../Source/UI/GridView/ColorPaletteGridView.h; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF17 /* CIEColorPicker.cpp */ /* CIEColorPicker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CIEColorPicker.cpp; path = ../../Source/UI/CIEColorPicker.cpp; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF18 /* CIEColorPicker.h */ /* CIEColorPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CIEColorPicker.h; path = ../../Source/UI/CIEColorPicker.h; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF20 /* ColorEngine.cpp */ /* ColorEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ColorEngine.cpp; path = ../../Source/Common/ColorEngine/ColorEngine.cpp; sourceTree = SOURCE_ROOT; };
+		AA11BB22CC33DD44EE55FF21 /* ColorEngine.h */ /* ColorEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ColorEngine.h; path = ../../Source/Common/ColorEngine/ColorEngine.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1353,6 +1374,7 @@
 				906938B14AE21D78EC5A85BB,
 				422A0C310E354EB87C253932,
 				8AB996CFD7C0FD090A45962C,
+				AA11BB22CC33DD44EE55FF23,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1547,6 +1569,7 @@
 				81E7E9119460354892EDF0BB,
 				8D1CF95397F01EE181C1ABF0,
 				D42A38E0C5AF64AF548E83BF,
+				AA11BB22CC33DD44EE55FF22,
 			);
 			name = Definitions;
 			sourceTree = "<group>";
@@ -1635,6 +1658,8 @@
 				DFD6F18C4D7FE86A84FD3F12,
 				D3AA14AA86CAA26D18053914,
 				AB0E3C665CF58829CA8EF074,
+				AA11BB22CC33DD44EE55FF14,
+				AA11BB22CC33DD44EE55FF15,
 			);
 			name = GridView;
 			sourceTree = "<group>";
@@ -1889,8 +1914,34 @@
 				E1D11321A7ACF990B9160F6E,
 				66A99752EE9116904075A593,
 				FCAD6499A587B5F6D7B1FCD0,
+				AA11BB22CC33DD44EE55FF17,
+				AA11BB22CC33DD44EE55FF18,
 			);
 			name = UI;
+			sourceTree = "<group>";
+		};
+		AA11BB22CC33DD44EE55FF22 /* ColorPalette */ = {
+			isa = PBXGroup;
+			children = (
+				AA11BB22CC33DD44EE55FF02,
+				AA11BB22CC33DD44EE55FF03,
+				AA11BB22CC33DD44EE55FF05,
+				AA11BB22CC33DD44EE55FF06,
+				AA11BB22CC33DD44EE55FF08,
+				AA11BB22CC33DD44EE55FF09,
+				AA11BB22CC33DD44EE55FF11,
+				AA11BB22CC33DD44EE55FF12,
+			);
+			name = ColorPalette;
+			sourceTree = "<group>";
+		};
+		AA11BB22CC33DD44EE55FF23 /* ColorEngine */ = {
+			isa = PBXGroup;
+			children = (
+				AA11BB22CC33DD44EE55FF20,
+				AA11BB22CC33DD44EE55FF21,
+			);
+			name = ColorEngine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2174,6 +2225,13 @@
 				1EAA7EBF201BDE0F0EDF8E29,
 				0103D84D6C1C52727082AC72,
 				107C23CCAAE34EBA90A8CFEB,
+				AA11BB22CC33DD44EE55FF01,
+				AA11BB22CC33DD44EE55FF04,
+				AA11BB22CC33DD44EE55FF07,
+				AA11BB22CC33DD44EE55FF10,
+				AA11BB22CC33DD44EE55FF13,
+				AA11BB22CC33DD44EE55FF16,
+				AA11BB22CC33DD44EE55FF19,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
