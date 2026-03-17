@@ -76,7 +76,7 @@
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /FS /bigobj %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
@@ -92,7 +92,7 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>..\..\Modules\juce_simpleweb\libs\VisualStudio2022\$(Platform)\MDd;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LargeAddressAware>true</LargeAddressAware>
-      <AdditionalDependencies>Setupapi.lib;hid.lib;Servus.lib;dnssd.lib;iphlpapi.lib;hid.lib;hidapi_static.lib;libssl.lib;libcrypto.lib;Processing.NDI.Lib.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Setupapi.lib;hid.lib;Servus.lib;dnssd.lib;iphlpapi.lib;hid.lib;hidapi_static.lib;libssl.lib;libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/HEAP:0x400000,0x10000 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Bscmake>
@@ -100,7 +100,7 @@
       <OutputFile>$(IntDir)\BlinderKitten.bsc</OutputFile>
     </Bscmake>
     <Lib>
-      <AdditionalDependencies>Setupapi.lib;hid.lib;Servus.lib;dnssd.lib;iphlpapi.lib;hid.lib;hidapi_static.lib;libssl.lib;libcrypto.lib;Processing.NDI.Lib.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Setupapi.lib;hid.lib;Servus.lib;dnssd.lib;iphlpapi.lib;hid.lib;hidapi_static.lib;libssl.lib;libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\Modules\juce_simpleweb\libs\VisualStudio2022\$(Platform)\MDd;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -125,7 +125,7 @@
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /FS /bigobj %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
@@ -144,7 +144,7 @@
       <AdditionalLibraryDirectories>../../External/servus/lib/win/x64/release;../../External/dnssd/lib;../../External/hidapi/lib/win/x64;../../External/NDI/lib/x64;..\..\Modules\juce_simpleweb\libs\VisualStudio2022\$(Platform)\MD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LargeAddressAware>true</LargeAddressAware>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalDependencies>Setupapi.lib;hid.lib;Servus.lib;dnssd.lib;iphlpapi.lib;hid.lib;hidapi_static.lib;libssl.lib;libcrypto.lib;Processing.NDI.Lib.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Setupapi.lib;hid.lib;Servus.lib;dnssd.lib;iphlpapi.lib;hid.lib;hidapi_static.lib;libssl.lib;libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/HEAP:0x400000,0x10000 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Bscmake>
@@ -152,7 +152,7 @@
       <OutputFile>$(IntDir)\BlinderKitten.bsc</OutputFile>
     </Bscmake>
     <Lib>
-      <AdditionalDependencies>Setupapi.lib;hid.lib;Servus.lib;dnssd.lib;iphlpapi.lib;hid.lib;hidapi_static.lib;libssl.lib;libcrypto.lib;Processing.NDI.Lib.x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Setupapi.lib;hid.lib;Servus.lib;dnssd.lib;iphlpapi.lib;hid.lib;hidapi_static.lib;libssl.lib;libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../External/servus/lib/win/x64/release;../../External/dnssd/lib;../../External/hidapi/lib/win/x64;../../External/NDI/lib/x64;..\..\Modules\juce_simpleweb\libs\VisualStudio2022\$(Platform)\MD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -170,6 +170,7 @@
     <ClCompile Include="..\..\Source\UI\GridView\GroupGridView.cpp"/>
     <ClCompile Include="..\..\Source\UI\GridView\MapperGridView.cpp"/>
     <ClCompile Include="..\..\Source\UI\GridView\PresetGridView.cpp"/>
+    <ClCompile Include="..\..\Source\UI\GridView\ColorPaletteGridView.cpp"/>
     <ClCompile Include="..\..\Source\UI\PatchSheet\PatchSheet.cpp"/>
     <ClCompile Include="..\..\Source\UI\PatchSheet\PatchSheetLine.cpp"/>
     <ClCompile Include="..\..\Source\UI\VirtualButtons\VirtualButton.cpp"/>
@@ -183,6 +184,7 @@
     <ClCompile Include="..\..\Source\UI\VirtualFaders\VirtualFaderColManagerUI.cpp"/>
     <ClCompile Include="..\..\Source\UI\VirtualFaders\VirtualFaderSlider.cpp"/>
     <ClCompile Include="..\..\Source\UI\BKColorPicker.cpp"/>
+    <ClCompile Include="..\..\Source\UI\CIEColorPicker.cpp"/>
     <ClCompile Include="..\..\Source\UI\Clock.cpp"/>
     <ClCompile Include="..\..\Source\UI\ConductorInfos.cpp"/>
     <ClCompile Include="..\..\Source\UI\CuelistLoadWindow.cpp"/>
@@ -471,6 +473,10 @@
     <ClCompile Include="..\..\Source\Definitions\Preset\PresetManagerUI.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Preset\PresetSubFixtureValues.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Preset\PresetValue.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPalette.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManager.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManagerUI.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteValue.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Programmer\Programmer.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Programmer\ProgrammerManager.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Programmer\ProgrammerManagerUI.cpp"/>
@@ -3522,6 +3528,7 @@
     <ClInclude Include="..\..\Source\UI\GridView\GroupGridView.h"/>
     <ClInclude Include="..\..\Source\UI\GridView\MapperGridView.h"/>
     <ClInclude Include="..\..\Source\UI\GridView\PresetGridView.h"/>
+    <ClInclude Include="..\..\Source\UI\GridView\ColorPaletteGridView.h"/>
     <ClInclude Include="..\..\Source\UI\PatchSheet\PatchSheet.h"/>
     <ClInclude Include="..\..\Source\UI\PatchSheet\PatchSheetLine.h"/>
     <ClInclude Include="..\..\Source\UI\VirtualButtons\VirtualButton.h"/>
@@ -3535,6 +3542,7 @@
     <ClInclude Include="..\..\Source\UI\VirtualFaders\VirtualFaderColManagerUI.h"/>
     <ClInclude Include="..\..\Source\UI\VirtualFaders\VirtualFaderSlider.h"/>
     <ClInclude Include="..\..\Source\UI\BKColorPicker.h"/>
+    <ClInclude Include="..\..\Source\UI\CIEColorPicker.h"/>
     <ClInclude Include="..\..\Source\UI\Clock.h"/>
     <ClInclude Include="..\..\Source\UI\ConductorInfos.h"/>
     <ClInclude Include="..\..\Source\UI\CuelistLoadWindow.h"/>
@@ -3705,6 +3713,10 @@
     <ClInclude Include="..\..\Source\Definitions\Preset\PresetManagerUI.h"/>
     <ClInclude Include="..\..\Source\Definitions\Preset\PresetSubFixtureValues.h"/>
     <ClInclude Include="..\..\Source\Definitions\Preset\PresetValue.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPalette.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManager.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManagerUI.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteValue.h"/>
     <ClInclude Include="..\..\Source\Definitions\Programmer\Programmer.h"/>
     <ClInclude Include="..\..\Source\Definitions\Programmer\ProgrammerManager.h"/>
     <ClInclude Include="..\..\Source\Definitions\Programmer\ProgrammerManagerUI.h"/>

@@ -85,6 +85,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/GroupGridView_5fc98182.o \
   $(JUCE_OBJDIR)/MapperGridView_2ac6085e.o \
   $(JUCE_OBJDIR)/PresetGridView_d172ffc.o \
+  $(JUCE_OBJDIR)/ColorPaletteGridView_4d295775.o \
   $(JUCE_OBJDIR)/PatchSheet_2c03483d.o \
   $(JUCE_OBJDIR)/PatchSheetLine_d2553e51.o \
   $(JUCE_OBJDIR)/VirtualButton_57e0460.o \
@@ -98,6 +99,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/VirtualFaderColManagerUI_5266e44f.o \
   $(JUCE_OBJDIR)/VirtualFaderSlider_540aaa8f.o \
   $(JUCE_OBJDIR)/BKColorPicker_26a4f576.o \
+  $(JUCE_OBJDIR)/CIEColorPicker_3641ef8e.o \
   $(JUCE_OBJDIR)/Clock_9b1dd19c.o \
   $(JUCE_OBJDIR)/ConductorInfos_9dff399a.o \
   $(JUCE_OBJDIR)/CuelistLoadWindow_9733d835.o \
@@ -215,6 +217,10 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/PresetManagerUI_a611ae2a.o \
   $(JUCE_OBJDIR)/PresetSubFixtureValues_d6740bec.o \
   $(JUCE_OBJDIR)/PresetValue_37303e9a.o \
+  $(JUCE_OBJDIR)/ColorPalette_43b0c041.o \
+  $(JUCE_OBJDIR)/ColorPaletteManager_53e018b6.o \
+  $(JUCE_OBJDIR)/ColorPaletteManagerUI_1d3d3d0a.o \
+  $(JUCE_OBJDIR)/ColorPaletteValue_31363d7a.o \
   $(JUCE_OBJDIR)/Programmer_37f4f5c1.o \
   $(JUCE_OBJDIR)/ProgrammerManager_59fcb336.o \
   $(JUCE_OBJDIR)/ProgrammerManagerUI_e9d378a.o \
@@ -345,6 +351,11 @@ $(JUCE_OBJDIR)/PresetGridView_d172ffc.o: ../../Source/UI/GridView/PresetGridView
 	@echo "Compiling PresetGridView.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
+$(JUCE_OBJDIR)/ColorPaletteGridView_4d295775.o: ../../Source/UI/GridView/ColorPaletteGridView.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling ColorPaletteGridView.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
 $(JUCE_OBJDIR)/PatchSheet_2c03483d.o: ../../Source/UI/PatchSheet/PatchSheet.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling PatchSheet.cpp"
@@ -408,6 +419,11 @@ $(JUCE_OBJDIR)/VirtualFaderSlider_540aaa8f.o: ../../Source/UI/VirtualFaders/Virt
 $(JUCE_OBJDIR)/BKColorPicker_26a4f576.o: ../../Source/UI/BKColorPicker.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling BKColorPicker.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/CIEColorPicker_3641ef8e.o: ../../Source/UI/CIEColorPicker.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling CIEColorPicker.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/Clock_9b1dd19c.o: ../../Source/UI/Clock.cpp
@@ -993,6 +1009,26 @@ $(JUCE_OBJDIR)/PresetSubFixtureValues_d6740bec.o: ../../Source/Definitions/Prese
 $(JUCE_OBJDIR)/PresetValue_37303e9a.o: ../../Source/Definitions/Preset/PresetValue.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling PresetValue.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/ColorPalette_43b0c041.o: ../../Source/Definitions/ColorPalette/ColorPalette.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling ColorPalette.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/ColorPaletteManager_53e018b6.o: ../../Source/Definitions/ColorPalette/ColorPaletteManager.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling ColorPaletteManager.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/ColorPaletteManagerUI_1d3d3d0a.o: ../../Source/Definitions/ColorPalette/ColorPaletteManagerUI.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling ColorPaletteManagerUI.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/ColorPaletteValue_31363d7a.o: ../../Source/Definitions/ColorPalette/ColorPaletteValue.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling ColorPaletteValue.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/Programmer_37f4f5c1.o: ../../Source/Definitions/Programmer/Programmer.cpp
