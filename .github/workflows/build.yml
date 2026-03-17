@@ -65,11 +65,10 @@ jobs:
         working-directory: ./Binaries/CI/App
 #
       - name: Upload
-        uses: ./.github/actions/upload
+        uses: actions/upload-artifact@v4
         with:
-          pkg-name: ./Binaries/CI/App/${{ steps.create_package.outputs.pkg-name }}
-          url: ${{ secrets.UPLOADURL }}
-          pass: ${{ secrets.UPLOADPASS }}
+          name: ${{ steps.create_package.outputs.pkg-name }}
+          path: ./Binaries/CI/App/${{ steps.create_package.outputs.pkg-name }}
 #
       - name: Rename PDB
         if: ${{ steps.set_variables.outputs.config == 'Release' && matrix.arch == 'win-x64' }}
@@ -81,11 +80,10 @@ jobs:
 #
       - name: Upload PDB
         if: ${{ steps.set_variables.outputs.config == 'Release' && matrix.arch == 'win-x64' }}
-        uses: ./.github/actions/upload
+        uses: actions/upload-artifact@v4
         with:
-          pkg-name: ./Builds/${{ matrix.buildFolder }}/x64/${{ steps.set_variables.outputs.config }}/App/${{ steps.create_package.outputs.pdb-name }}
-          url: ${{ secrets.PDBUPLOADURL }}
-          pass: ${{ secrets.UPLOADPASS }}
+          name: ${{ steps.create_package.outputs.pdb-name }}
+          path: ./Builds/${{ matrix.buildFolder }}/x64/${{ steps.set_variables.outputs.config }}/App/${{ steps.create_package.outputs.pdb-name }}
 #
 
   osx:
@@ -158,11 +156,10 @@ jobs:
         working-directory: ./Package
 
       - name: Upload
-        uses: ./.github/actions/upload
+        uses: actions/upload-artifact@v4
         with:
-          pkg-name: ./Package/${{ steps.create_package.outputs.pkg-name }}
-          url: ${{ secrets.UPLOADURL }}
-          pass: ${{ secrets.UPLOADPASS }}
+          name: ${{ steps.create_package.outputs.pkg-name }}
+          path: ./Package/${{ steps.create_package.outputs.pkg-name }}
           
   linux:
     # if: false # tmp disable
@@ -235,11 +232,10 @@ jobs:
         working-directory: ./Builds/LinuxMakefile
 #
       - name: Upload
-        uses: ./.github/actions/upload
+        uses: actions/upload-artifact@v4
         with:
-          pkg-name: ./Builds/LinuxMakefile/${{ steps.create_package.outputs.pkg-name }}
-          url: ${{ secrets.UPLOADURL }}
-          pass: ${{ secrets.UPLOADPASS }}
+          name: ${{ steps.create_package.outputs.pkg-name }}
+          path: ./Builds/LinuxMakefile/${{ steps.create_package.outputs.pkg-name }}
 
   raspberrypi:
     #if: false # tmp disable
@@ -319,8 +315,7 @@ jobs:
         working-directory: ./Builds/${{ matrix.buildFolder }}
 
       - name: Upload
-        uses: ./.github/actions/upload
+        uses: actions/upload-artifact@v4
         with:
-          pkg-name: ./Builds/${{ matrix.buildFolder }}/${{ steps.create_package.outputs.pkg-name }}
-          url: ${{ secrets.UPLOADURL }}
-          pass: ${{ secrets.UPLOADPASS }}
+          name: ${{ steps.create_package.outputs.pkg-name }}
+          path: ./Builds/${{ matrix.buildFolder }}/${{ steps.create_package.outputs.pkg-name }}
