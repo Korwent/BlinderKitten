@@ -166,7 +166,7 @@
     <ClCompile Include="..\..\Source\UI\GridView\GroupGridView.cpp"/>
     <ClCompile Include="..\..\Source\UI\GridView\MapperGridView.cpp"/>
     <ClCompile Include="..\..\Source\UI\GridView\PresetGridView.cpp"/>
-    <ClCompile Include="..\..\Source\UI\GridView\ColorPaletteGridView.cpp"/>
+    <ClCompile Include="..\..\Source\UI\GridView\ColorSwatchGridView.cpp"/>
     <ClCompile Include="..\..\Source\UI\PatchSheet\PatchSheet.cpp"/>
     <ClCompile Include="..\..\Source\UI\PatchSheet\PatchSheetLine.cpp"/>
     <ClCompile Include="..\..\Source\UI\VirtualButtons\VirtualButton.cpp"/>
@@ -181,6 +181,7 @@
     <ClCompile Include="..\..\Source\UI\VirtualFaders\VirtualFaderSlider.cpp"/>
     <ClCompile Include="..\..\Source\UI\BKColorPicker.cpp"/>
     <ClCompile Include="..\..\Source\UI\CIEColorPicker.cpp"/>
+    <ClCompile Include="..\..\Source\UI\HSBFaders.cpp"/>
     <ClCompile Include="..\..\Source\UI\Clock.cpp"/>
     <ClCompile Include="..\..\Source\UI\ConductorInfos.cpp"/>
     <ClCompile Include="..\..\Source\UI\CuelistLoadWindow.cpp"/>
@@ -469,10 +470,10 @@
     <ClCompile Include="..\..\Source\Definitions\Preset\PresetManagerUI.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Preset\PresetSubFixtureValues.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Preset\PresetValue.cpp"/>
-    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPalette.cpp"/>
-    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManager.cpp"/>
-    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManagerUI.cpp"/>
-    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteValue.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorSwatch\ColorSwatch.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManager.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManagerUI.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchValue.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Programmer\Programmer.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Programmer\ProgrammerManager.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Programmer\ProgrammerManagerUI.cpp"/>
@@ -3524,7 +3525,7 @@
     <ClInclude Include="..\..\Source\UI\GridView\GroupGridView.h"/>
     <ClInclude Include="..\..\Source\UI\GridView\MapperGridView.h"/>
     <ClInclude Include="..\..\Source\UI\GridView\PresetGridView.h"/>
-    <ClInclude Include="..\..\Source\UI\GridView\ColorPaletteGridView.h"/>
+    <ClInclude Include="..\..\Source\UI\GridView\ColorSwatchGridView.h"/>
     <ClInclude Include="..\..\Source\UI\PatchSheet\PatchSheet.h"/>
     <ClInclude Include="..\..\Source\UI\PatchSheet\PatchSheetLine.h"/>
     <ClInclude Include="..\..\Source\UI\VirtualButtons\VirtualButton.h"/>
@@ -3539,6 +3540,7 @@
     <ClInclude Include="..\..\Source\UI\VirtualFaders\VirtualFaderSlider.h"/>
     <ClInclude Include="..\..\Source\UI\BKColorPicker.h"/>
     <ClInclude Include="..\..\Source\UI\CIEColorPicker.h"/>
+    <ClInclude Include="..\..\Source\UI\HSBFaders.h"/>
     <ClInclude Include="..\..\Source\UI\Clock.h"/>
     <ClInclude Include="..\..\Source\UI\ConductorInfos.h"/>
     <ClInclude Include="..\..\Source\UI\CuelistLoadWindow.h"/>
@@ -3709,10 +3711,10 @@
     <ClInclude Include="..\..\Source\Definitions\Preset\PresetManagerUI.h"/>
     <ClInclude Include="..\..\Source\Definitions\Preset\PresetSubFixtureValues.h"/>
     <ClInclude Include="..\..\Source\Definitions\Preset\PresetValue.h"/>
-    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPalette.h"/>
-    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManager.h"/>
-    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManagerUI.h"/>
-    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteValue.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorSwatch\ColorSwatch.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManager.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManagerUI.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchValue.h"/>
     <ClInclude Include="..\..\Source\Definitions\Programmer\Programmer.h"/>
     <ClInclude Include="..\..\Source\Definitions\Programmer\ProgrammerManager.h"/>
     <ClInclude Include="..\..\Source\Definitions\Programmer\ProgrammerManagerUI.h"/>

@@ -591,3 +591,9 @@ void CIEColorPicker::timerCallback()
     updateGamutFromSelection();
     repaint();
 }
+
+void CIEColorPicker::clearCursorOverrideFromExternal()
+{
+    cursorCIEX = -1.0f;
+    cursorCIEY = -1.0f;
+}

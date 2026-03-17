@@ -24,7 +24,7 @@ public:
 	EnumParameter* groupCopyMode;
 	EnumParameter* presetCopyMode;
 	EnumParameter* cuelistCopyMode;
-	EnumParameter* colorPaletteCopyMode;
+	EnumParameter* colorSwatchCopyMode;
 	EnumParameter* programmerMergeMode;
 	Trigger* go;
 

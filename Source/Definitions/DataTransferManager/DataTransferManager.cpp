@@ -32,9 +32,9 @@
 #include "../Carousel/Carousel.h"
 #include "../Mapper/MapperManager.h"
 #include "../Mapper/Mapper.h"
-#include "../ColorPalette/ColorPaletteManager.h"
-#include "../ColorPalette/ColorPalette.h"
-#include "../ColorPalette/ColorPaletteValue.h"
+#include "../ColorSwatch/ColorSwatchManager.h"
+#include "../ColorSwatch/ColorSwatch.h"
+#include "../ColorSwatch/ColorSwatchValue.h"
 #include "../Fixture/FixtureManager.h"
 #include "../Fixture/Fixture.h"
 #include "UserInputManager.h"
@@ -52,7 +52,7 @@
 #include "UI/GridView/FixtureGridView.h"
 #include "UI/GridView/GroupGridView.h"
 #include "UI/GridView/PresetGridView.h"
-#include "UI/GridView/ColorPaletteGridView.h"
+#include "UI/GridView/ColorSwatchGridView.h"
 #include "UI/GridView/CuelistGridView.h"
 #include "UI/GridView/EffectGridView.h"
 #include "UI/GridView/CarouselGridView.h"
@@ -71,7 +71,7 @@ DataTransferManager::DataTransferManager() :
     sourceType->addOption("Effect", "effect");
     sourceType->addOption("Carousel", "carousel");
     sourceType->addOption("Mapper", "mapper");
-    sourceType->addOption("Color Palette", "colorpalette");
+    sourceType->addOption("Color Swatch", "colorswatch");
     sourceType->addOption("Programmer", "programmer");
     sourceType->addOption("Virtual Button", "virtualbutton");
     sourceType->addOption("Virtual Fader Column", "virtualfadercol");
@@ -85,7 +85,7 @@ DataTransferManager::DataTransferManager() :
     targetType->addOption("Effect", "effect");
     targetType->addOption("Carousel", "carousel");
     targetType->addOption("Mapper", "mapper");
-    targetType->addOption("Color Palette", "colorpalette");
+    targetType->addOption("Color Swatch", "colorswatch");
     targetType->addOption("Programmer", "programmer");
     targetType->addOption("Virtual Button", "virtualbutton");
     targetType->addOption("Virtual Fader Column", "virtualfadercol");
@@ -105,9 +105,9 @@ DataTransferManager::DataTransferManager() :
     presetCopyMode->addOption("Remove", "remove");
     presetCopyMode->addOption("Set another", "setanother");
 
-    colorPaletteCopyMode = addEnumParameter("Color Palette merge mode", "Color Palette record mode");
-    colorPaletteCopyMode->addOption("Merge", "merge");
-    colorPaletteCopyMode->addOption("Replace", "replace");
+    colorSwatchCopyMode = addEnumParameter("Color Swatch merge mode", "Color Swatch record mode");
+    colorSwatchCopyMode->addOption("Merge", "merge");
+    colorSwatchCopyMode->addOption("Replace", "replace");
 
     cuelistCopyMode = addEnumParameter("Cuelist merge mode", "Cuelist record mode");
     cuelistCopyMode->addOption("Update current cue", "merge");
@@ -125,7 +125,7 @@ void DataTransferManager::updateDisplay() {
     groupCopyMode->hideInEditor = !(tgt == "Group");
     presetCopyMode->hideInEditor = !(tgt == "Preset");
     cuelistCopyMode->hideInEditor = !(tgt == "Cuelist");
-    colorPaletteCopyMode->hideInEditor = !(tgt == "colorpalette");
+    colorSwatchCopyMode->hideInEditor = !(tgt == "colorswatch");
     queuedNotifier.addMessage(new ContainerAsyncEvent(ContainerAsyncEvent::ControllableContainerNeedsRebuild, this));
 }
 
@@ -377,16 +377,16 @@ void DataTransferManager::execute() {
                 execute();
             }
         }
-        else if (trgType == "colorpalette") {
+        else if (trgType == "colorswatch") {
             valid = true;
-            ColorPalette* target = Brain::getInstance()->getColorPaletteById(tId);
+            ColorSwatch* target = Brain::getInstance()->getColorSwatchById(tId);
             if (target == nullptr) {
-                target = ColorPaletteManager::getInstance()->addItem(new ColorPalette());
+                target = ColorSwatchManager::getInstance()->addItem(new ColorSwatch());
                 target->id->setValue(tId);
-                target->userName->setValue("Color Palette " + String(tId));
+                target->userName->setValue("Color Swatch " + String(tId));
                 target->values.clear();
             }
-            if (colorPaletteCopyMode->getValue() == "replace") {
+            if (colorSwatchCopyMode->getValue() == "replace") {
                 target->values.clear();
             }
 
@@ -406,7 +406,7 @@ void DataTransferManager::execute() {
                 if (ct != redCT && ct != greenCT && ct != blueCT) continue;
                 if (cValue->endValue() < 0) continue;
 
-                ColorPaletteValue* existing = nullptr;
+                ColorSwatchValue* existing = nullptr;
                 for (int j = 0; j < target->values.items.size(); j++) {
                     if (dynamic_cast<ChannelType*>(target->values.items[j]->channelType->targetContainer.get()) == ct) {
                         existing = target->values.items[j];
@@ -419,9 +419,9 @@ void DataTransferManager::execute() {
                 }
                 existing->paramValue->setValue(cValue->endValue());
             }
-            ColorPaletteGridView::getInstance()->updateCells();
+            ColorSwatchGridView::getInstance()->updateCells();
             target->selectThis();
-            LOG("Color Palette recorded");
+            LOG("Color Swatch recorded");
         }
     }
     else if (srcType == "cuelist") {
@@ -641,30 +641,30 @@ void DataTransferManager::execute() {
 
         }
     }
-    else if (srcType == "colorpalette") {
-        ColorPalette* src = Brain::getInstance()->getColorPaletteById(sId);
+    else if (srcType == "colorswatch") {
+        ColorSwatch* src = Brain::getInstance()->getColorSwatchById(sId);
         if (src == nullptr) {
-            LOGERROR("Color Palette " + String(sId) + " doesn't exist !");
+            LOGERROR("Color Swatch " + String(sId) + " doesn't exist !");
             return;
         }
-        if (trgType == "colorpalette") {
+        if (trgType == "colorswatch") {
             valid = true;
-            ColorPalette* trg = Brain::getInstance()->getColorPaletteById(tId);
+            ColorSwatch* trg = Brain::getInstance()->getColorSwatchById(tId);
             if (trg == nullptr) {
-                trg = ColorPaletteManager::getInstance()->addItem(new ColorPalette());
+                trg = ColorSwatchManager::getInstance()->addItem(new ColorSwatch());
                 trg->id->setValue(tId);
                 trg->userName->setValue(src->userName->getValue());
                 trg->values.clear();
             }
-            if (colorPaletteCopyMode->getValue() == "replace") {
+            if (colorSwatchCopyMode->getValue() == "replace") {
                 trg->values.clear();
             }
             for (int i = 0; i < src->values.items.size(); i++) {
-                ColorPaletteValue* srcV = src->values.items[i];
+                ColorSwatchValue* srcV = src->values.items[i];
                 ChannelType* ct = dynamic_cast<ChannelType*>(srcV->channelType->targetContainer.get());
                 if (ct == nullptr) continue;
                 // Check if channel type already stored
-                ColorPaletteValue* existing = nullptr;
+                ColorSwatchValue* existing = nullptr;
                 for (int j = 0; j < trg->values.items.size(); j++) {
                     if (dynamic_cast<ChannelType*>(trg->values.items[j]->channelType->targetContainer.get()) == ct) {
                         existing = trg->values.items[j];
@@ -680,8 +680,8 @@ void DataTransferManager::execute() {
             trg->selectThis();
         }
     }
-    else if (srcType == "programmer" && trgType == "colorpalette") {
-        // programmer -> colorpalette recording handled below
+    else if (srcType == "programmer" && trgType == "colorswatch") {
+        // programmer -> colorswatch recording handled below
     }
     else if (srcType == "preset") {
         Preset* src = Brain::getInstance()->getPresetById(sId);
@@ -851,9 +851,9 @@ void DataTransferManager::editObject(String type, int id) {
         target->selectThis();
         Brain::getInstance()->showWindow("Inspector");
     }
-    else if (type == "colorpalette") {
-        ColorPalette* target = Brain::getInstance()->getColorPaletteById(id);
-        if (target == nullptr) { target = ColorPaletteManager::getInstance()->addItem(new ColorPalette()); target->id->setValue(id); }
+    else if (type == "colorswatch") {
+        ColorSwatch* target = Brain::getInstance()->getColorSwatchById(id);
+        if (target == nullptr) { target = ColorSwatchManager::getInstance()->addItem(new ColorSwatch()); target->id->setValue(id); }
         target->selectThis();
         Brain::getInstance()->showWindow("Inspector");
     }
@@ -900,9 +900,9 @@ void DataTransferManager::deleteObject(String type, int id) {
         Mapper* target = Brain::getInstance()->getMapperById(id);
         if (target != nullptr) { MapperManager::getInstance()->removeItem(target); MapperGridView::getInstance()->updateCells(); }
     }
-    else if (type == "colorpalette") {
-        ColorPalette* target = Brain::getInstance()->getColorPaletteById(id);
-        if (target != nullptr) { ColorPaletteManager::getInstance()->removeItem(target); ColorPaletteGridView::getInstance()->updateCells(); }
+    else if (type == "colorswatch") {
+        ColorSwatch* target = Brain::getInstance()->getColorSwatchById(id);
+        if (target != nullptr) { ColorSwatchManager::getInstance()->removeItem(target); ColorSwatchGridView::getInstance()->updateCells(); }
     }
     else if (type == "virtualbutton") {
         VirtualButtonGrid::getInstance()->deleteCell(id);
@@ -984,9 +984,9 @@ void DataTransferManager::moveObject(String type, int id, String typeTo, int idT
         source->id->setValue(idTo);
         if (target != nullptr) { target->id->setValue(id); }
     }
-    else if (type == "colorpalette" && typeTo == "colorpalette") {
-        ColorPalette* source = Brain::getInstance()->getColorPaletteById(id);
-        ColorPalette* target = Brain::getInstance()->getColorPaletteById(idTo);
+    else if (type == "colorswatch" && typeTo == "colorswatch") {
+        ColorSwatch* source = Brain::getInstance()->getColorSwatchById(id);
+        ColorSwatch* target = Brain::getInstance()->getColorSwatchById(idTo);
         if (source == nullptr) { return; }
         if (target != nullptr) { target->id->setValue(998989); }
         source->id->setValue(idTo);

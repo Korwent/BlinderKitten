@@ -182,8 +182,8 @@
     <Filter Include="BlinderKitten\Source\Definitions\Preset">
       <UniqueIdentifier>{E44E149A-1102-88EB-5E6A-298D951247CD}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BlinderKitten\Source\Definitions\ColorPalette">
-      <UniqueIdentifier>{80AD0C0A-951E-A446-9F76-13B6372E69EB}</UniqueIdentifier>
+    <Filter Include="BlinderKitten\Source\Definitions\ColorSwatch">
+      <UniqueIdentifier>{72039CC6-E70F-9681-C4DE-2EFCC1D0D633}</UniqueIdentifier>
     </Filter>
     <Filter Include="BlinderKitten\Source\Definitions\Programmer">
       <UniqueIdentifier>{166D0C99-5B9A-E645-30E2-3B61A6497BAE}</UniqueIdentifier>
@@ -1198,7 +1198,7 @@
     <ClCompile Include="..\..\Source\UI\GridView\PresetGridView.cpp">
       <Filter>BlinderKitten\Source\UI\GridView</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\UI\GridView\ColorPaletteGridView.cpp">
+    <ClCompile Include="..\..\Source\UI\GridView\ColorSwatchGridView.cpp">
       <Filter>BlinderKitten\Source\UI\GridView</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\PatchSheet\PatchSheet.cpp">
@@ -1241,6 +1241,9 @@
       <Filter>BlinderKitten\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\CIEColorPicker.cpp">
+      <Filter>BlinderKitten\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UI\HSBFaders.cpp">
       <Filter>BlinderKitten\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\Clock.cpp">
@@ -1765,17 +1768,17 @@
     <ClCompile Include="..\..\Source\Definitions\Preset\PresetValue.cpp">
       <Filter>BlinderKitten\Source\Definitions\Preset</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPalette.cpp">
-      <Filter>BlinderKitten\Source\Definitions\ColorPalette</Filter>
+    <ClCompile Include="..\..\Source\Definitions\ColorSwatch\ColorSwatch.cpp">
+      <Filter>BlinderKitten\Source\Definitions\ColorSwatch</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManager.cpp">
-      <Filter>BlinderKitten\Source\Definitions\ColorPalette</Filter>
+    <ClCompile Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManager.cpp">
+      <Filter>BlinderKitten\Source\Definitions\ColorSwatch</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManagerUI.cpp">
-      <Filter>BlinderKitten\Source\Definitions\ColorPalette</Filter>
+    <ClCompile Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManagerUI.cpp">
+      <Filter>BlinderKitten\Source\Definitions\ColorSwatch</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteValue.cpp">
-      <Filter>BlinderKitten\Source\Definitions\ColorPalette</Filter>
+    <ClCompile Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchValue.cpp">
+      <Filter>BlinderKitten\Source\Definitions\ColorSwatch</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Definitions\Programmer\Programmer.cpp">
       <Filter>BlinderKitten\Source\Definitions\Programmer</Filter>
@@ -5139,7 +5142,7 @@
     <ClInclude Include="..\..\Source\UI\GridView\PresetGridView.h">
       <Filter>BlinderKitten\Source\UI\GridView</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\UI\GridView\ColorPaletteGridView.h">
+    <ClInclude Include="..\..\Source\UI\GridView\ColorSwatchGridView.h">
       <Filter>BlinderKitten\Source\UI\GridView</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\PatchSheet\PatchSheet.h">
@@ -5182,6 +5185,9 @@
       <Filter>BlinderKitten\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\CIEColorPicker.h">
+      <Filter>BlinderKitten\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UI\HSBFaders.h">
       <Filter>BlinderKitten\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\Clock.h">
@@ -5694,17 +5700,17 @@
     <ClInclude Include="..\..\Source\Definitions\Preset\PresetValue.h">
       <Filter>BlinderKitten\Source\Definitions\Preset</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPalette.h">
-      <Filter>BlinderKitten\Source\Definitions\ColorPalette</Filter>
+    <ClInclude Include="..\..\Source\Definitions\ColorSwatch\ColorSwatch.h">
+      <Filter>BlinderKitten\Source\Definitions\ColorSwatch</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManager.h">
-      <Filter>BlinderKitten\Source\Definitions\ColorPalette</Filter>
+    <ClInclude Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManager.h">
+      <Filter>BlinderKitten\Source\Definitions\ColorSwatch</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManagerUI.h">
-      <Filter>BlinderKitten\Source\Definitions\ColorPalette</Filter>
+    <ClInclude Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManagerUI.h">
+      <Filter>BlinderKitten\Source\Definitions\ColorSwatch</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteValue.h">
-      <Filter>BlinderKitten\Source\Definitions\ColorPalette</Filter>
+    <ClInclude Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchValue.h">
+      <Filter>BlinderKitten\Source\Definitions\ColorSwatch</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Definitions\Programmer\Programmer.h">
       <Filter>BlinderKitten\Source\Definitions\Programmer</Filter>

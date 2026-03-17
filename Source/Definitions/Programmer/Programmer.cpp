@@ -93,7 +93,7 @@ Programmer::Programmer(var params) :
 	cliParamAType->addOption("Effect", "effect");
 	cliParamAType->addOption("Carousel", "carousel");
 	cliParamAType->addOption("Mapper", "mapper");
-	cliParamAType->addOption("Color Palette", "colorpalette");
+	cliParamAType->addOption("Color Swatch", "colorswatch");
 	cliParamAType->addOption("Virtual button", "virtualbutton");
 	cliParamAType->addOption("Virtual fader column", "virtualfadercol");
 	cliParamAType->addOption("Virtual fader element", "virtualfaderelement");
@@ -108,7 +108,7 @@ Programmer::Programmer(var params) :
 	cliParamBType->addOption("Effect", "effect");
 	cliParamBType->addOption("Carousel", "carousel");
 	cliParamBType->addOption("Mapper", "mapper");
-	cliParamBType->addOption("Color Palette", "colorpalette");
+	cliParamBType->addOption("Color Swatch", "colorswatch");
 	cliParamBType->addOption("Virtual button", "virtualbutton");
 	cliParamBType->addOption("Virtual fader column", "virtualfadercol");
 	cliParamBType->addOption("Virtual fader element", "virtualfaderelement");
@@ -542,7 +542,7 @@ void Programmer::processUserInput(String s) {
 				LOGERROR(s+ " not allowed");
 			}
 		}
-		else if (s == "fixture" || s == "group" || s == "preset" || s == "cuelist" || s == "effect" || s == "carousel" || s == "mapper" || s == "colorpalette" || s == "virtualbutton" || s == "virtualfadercol" || s == "virtualfaderelement") {
+		else if (s == "fixture" || s == "group" || s == "preset" || s == "cuelist" || s == "effect" || s == "carousel" || s == "mapper" || s == "colorswatch" || s == "virtualbutton" || s == "virtualfadercol" || s == "virtualfaderelement") {
 			if (userCanPressTargetType) {
 				dynamic_cast<EnumParameter*>(currentUserTargetType)->setValueWithData(s);
 			}

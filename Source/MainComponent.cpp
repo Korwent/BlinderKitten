@@ -18,7 +18,7 @@
 #include "Definitions/Stamp/StampManagerUI.h"
 #include "Definitions/Carousel/CarouselManagerUI.h"
 #include "Definitions/Mapper/MapperManagerUI.h"
-#include "Definitions/ColorPalette/ColorPaletteManagerUI.h"
+#include "Definitions/ColorSwatch/ColorSwatchManagerUI.h"
 #include "Definitions/Tracker/TrackerManagerUI.h"
 #include "Definitions/SelectionMaster/SelectionMasterManagerUI.h"
 #include "Definitions/Multiplicator/MultiplicatorManagerUI.h"
@@ -31,7 +31,7 @@
 #include "UI/GridView/FixtureGridView.h"
 #include "UI/GridView/GroupGridView.h"
 #include "UI/GridView/PresetGridView.h"
-#include "UI/GridView/ColorPaletteGridView.h"
+#include "UI/GridView/ColorSwatchGridView.h"
 #include "UI/GridView/CuelistGridView.h"
 #include "UI/GridView/EffectGridView.h"
 #include "UI/GridView/CarouselGridView.h"
@@ -45,6 +45,7 @@
 #include "UI/ConductorInfos.h"
 #include "UI/BKColorPicker.h"
 #include "UI/CIEColorPicker.h"
+#include "UI/HSBFaders.h"
 #include "UI/DMXChannelView.h"
 #include "UI/LayoutViewer.h"
 #include "UI/CuelistSheet/CuelistSheet.h"
@@ -124,7 +125,7 @@ void MainContentComponent::init()
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Fixtures", &FixtureManagerUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Groups", &GroupManagerUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Presets", &PresetManagerUI::create));
-    ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Color Palettes", &ColorPaletteManagerUI::create));
+    ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Color Swatches", &ColorSwatchManagerUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Timing Presets", &TimingPresetManagerUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Path Presets", &BKPathPresetManagerUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Curve Presets", &CurvePresetManagerUI::create));
@@ -146,7 +147,7 @@ void MainContentComponent::init()
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Fixture Grid", &FixtureGridViewUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Group Grid", &GroupGridViewUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Preset Grid", &PresetGridViewUI::create));
-    ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Color Palette Grid", &ColorPaletteGridViewUI::create));
+    ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Color Swatch Grid", &ColorSwatchGridViewUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Cuelist Grid", &CuelistGridViewUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Effect Grid", &EffectGridViewUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Carousel Grid", &CarouselGridViewUI::create));
@@ -160,6 +161,7 @@ void MainContentComponent::init()
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Conductor Infos", &ConductorInfosUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Color Picker", &BKColorPickerUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("CIE Color Picker", &CIEColorPickerUI::create));
+    ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("HSB Faders", &HSBFadersUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("DMX Tester", &DMXChannelView::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Layout Viewer", &LayoutViewer::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Cuelist sheet", &CuelistSheetUI::create));
@@ -172,7 +174,7 @@ void MainContentComponent::init()
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Fixtures", "Lists");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Groups", "Lists");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Presets", "Lists");
-    ShapeShifterManager::getInstance()->isInViewSubMenu.set("Color Palettes", "Lists");
+    ShapeShifterManager::getInstance()->isInViewSubMenu.set("Color Swatches", "Lists");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Timing Presets", "Lists");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Path Presets", "Lists");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Curve Presets", "Lists");
@@ -194,7 +196,7 @@ void MainContentComponent::init()
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Fixture Grid", "Grids");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Group Grid", "Grids");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Preset Grid", "Grids");
-    ShapeShifterManager::getInstance()->isInViewSubMenu.set("Color Palette Grid", "Grids");
+    ShapeShifterManager::getInstance()->isInViewSubMenu.set("Color Swatch Grid", "Grids");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Cuelist Grid", "Grids");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Effect Grid", "Grids");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Carousel Grid", "Grids");
@@ -205,6 +207,7 @@ void MainContentComponent::init()
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Virtual faders grid", "Playback");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Conductor Infos", "Panels");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Color Picker", "Panels");
+    ShapeShifterManager::getInstance()->isInViewSubMenu.set("HSB Faders", "Panels");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("DMX Tester", "Panels");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Layout Viewer", "Panels");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Cuelist sheet", "Panels");

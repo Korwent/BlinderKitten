@@ -43,6 +43,7 @@ public:
     void mouseUp(const MouseEvent& e) override;
     void mouseDrag(const MouseEvent& e) override;
     void timerCallback() override;
+    void clearCursorOverrideFromExternal();
 
 private:
     // Last CIE xy set from a mouse click/drag (bypasses sRGB round-trip for accurate cursor).

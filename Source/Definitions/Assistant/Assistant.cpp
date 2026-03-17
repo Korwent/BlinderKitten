@@ -929,7 +929,7 @@ void Assistant::importAscii()
                 currentPrimary = "$PALETTE";
                 currentSecondary = "$PALETTE";
             }
-            else if (words[0] == "$COLORPALETTE") {
+            else if (words[0] == "$COLORSWATCH") {
                 if (idToPreset.contains("CP" + words[1])) {
                     currentPreset = idToPreset.getReference("CP" + words[1]);
                 }
