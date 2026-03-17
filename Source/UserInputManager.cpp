@@ -17,6 +17,8 @@
 #include "Definitions/Mapper/Mapper.h"
 #include "Definitions/Tracker/Tracker.h"
 #include "Definitions/Preset/Preset.h"
+#include "Definitions/ColorPalette/ColorPalette.h"
+#include "Definitions/ColorPalette/ColorPaletteValue.h"
 #include "Definitions/Programmer/Programmer.h"
 #include "Definitions/Programmer/ProgrammerManager.h"
 #include "Definitions/Command/Command.h"
@@ -995,6 +997,16 @@ void UserInputManager::gridViewCellPressed(String type, int id) {
 		Mapper* trg = Brain::getInstance()->getMapperById(id);
 		if (trg != nullptr) {
 			trg->selectThis();
+		}
+	}
+	else if (type == "colorpalette") {
+		ColorPalette* cp = Brain::getInstance()->getColorPaletteById(id);
+		if (cp != nullptr) {
+			for (int i = 0; i < cp->values.items.size(); i++) {
+				ColorPaletteValue* cpv = cp->values.items[i];
+				ChannelType* ct = dynamic_cast<ChannelType*>(cpv->channelType->targetContainer.get());
+				if (ct != nullptr) changeChannelValue(ct, cpv->paramValue->getValue());
+			}
 		}
 	}
 }

@@ -106,6 +106,12 @@ public:
     float mouseLayoutY = 0.0f;
     bool mouseInLayout = false;
 
+    OwnedArray<TextButton> groupButtons;
+    Array<int> groupIds;
+    int groupListWidth = 100;
+    void rebuildGroupList();
+    void updateGroupButtonStates();
+
     bool isInterestedInDragSource(const SourceDetails& source) override;
     void itemDropped(const SourceDetails& source) override;
 

@@ -75,6 +75,10 @@
                 file="Source/UI/GridView/PresetGridView.cpp"/>
           <FILE id="BXrKtJ" name="PresetGridView.h" compile="0" resource="0"
                 file="Source/UI/GridView/PresetGridView.h"/>
+          <FILE id="aCPL01" name="ColorPaletteGridView.cpp" compile="1" resource="0"
+                file="Source/UI/GridView/ColorPaletteGridView.cpp"/>
+          <FILE id="bDPL02" name="ColorPaletteGridView.h" compile="0" resource="0"
+                file="Source/UI/GridView/ColorPaletteGridView.h"/>
         </GROUP>
         <GROUP id="{EE0113DF-BAB4-232C-8F2E-7452E78EBD3E}" name="PatchSheet">
           <FILE id="w51wJU" name="PatchSheet.cpp" compile="1" resource="0" file="Source/UI/PatchSheet/PatchSheet.cpp"/>
@@ -130,6 +134,9 @@
         <FILE id="qfx9JQ" name="BKColorPicker.cpp" compile="1" resource="0"
               file="Source/UI/BKColorPicker.cpp"/>
         <FILE id="wbgqAn" name="BKColorPicker.h" compile="0" resource="0" file="Source/UI/BKColorPicker.h"/>
+        <FILE id="CIEcp1" name="CIEColorPicker.cpp" compile="1" resource="0"
+              file="Source/UI/CIEColorPicker.cpp"/>
+        <FILE id="CIEcp2" name="CIEColorPicker.h" compile="0" resource="0" file="Source/UI/CIEColorPicker.h"/>
         <FILE id="AAvC3T" name="Clock.cpp" compile="1" resource="0" file="Source/UI/Clock.cpp"/>
         <FILE id="NIOemw" name="Clock.h" compile="0" resource="0" file="Source/UI/Clock.h"/>
         <FILE id="datAZp" name="ConductorInfos.cpp" compile="1" resource="0"
@@ -794,6 +801,16 @@
                 file="Source/Definitions/Preset/PresetSubFixtureValues.h"/>
           <FILE id="zFF8vA" name="PresetValue.cpp" compile="1" resource="0" file="Source/Definitions/Preset/PresetValue.cpp"/>
           <FILE id="azxx7K" name="PresetValue.h" compile="0" resource="0" file="Source/Definitions/Preset/PresetValue.h"/>
+        </GROUP>
+        <GROUP id="{A1B2C3D4-E5F6-A7B8-C9D0-E1F2A3B4C5D6}" name="ColorPalette">
+          <FILE id="cPAL01" name="ColorPalette.cpp" compile="1" resource="0" file="Source/Definitions/ColorPalette/ColorPalette.cpp"/>
+          <FILE id="cPAL02" name="ColorPalette.h" compile="0" resource="0" file="Source/Definitions/ColorPalette/ColorPalette.h"/>
+          <FILE id="cPAL03" name="ColorPaletteManager.cpp" compile="1" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteManager.cpp"/>
+          <FILE id="cPAL04" name="ColorPaletteManager.h" compile="0" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteManager.h"/>
+          <FILE id="cPAL05" name="ColorPaletteManagerUI.cpp" compile="1" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteManagerUI.cpp"/>
+          <FILE id="cPAL06" name="ColorPaletteManagerUI.h" compile="0" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteManagerUI.h"/>
+          <FILE id="cPAL07" name="ColorPaletteValue.cpp" compile="1" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteValue.cpp"/>
+          <FILE id="cPAL08" name="ColorPaletteValue.h" compile="0" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteValue.h"/>
         </GROUP>
         <GROUP id="{3CCC073F-169E-F72B-605F-F3D382B83A11}" name="Programmer">
           <FILE id="eSTduU" name="Programmer.cpp" compile="1" resource="0" file="Source/Definitions/Programmer/Programmer.cpp"/>

@@ -1233,6 +1233,9 @@
     <ClCompile Include="..\..\Source\UI\BKColorPicker.cpp">
       <Filter>BlinderKitten\Source\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\UI\CIEColorPicker.cpp">
+      <Filter>BlinderKitten\Source\UI</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\UI\Clock.cpp">
       <Filter>BlinderKitten\Source\UI</Filter>
     </ClCompile>
@@ -3393,6 +3396,9 @@
       <Filter>BlinderKitten\Source\UI\VirtualFaders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\BKColorPicker.h">
+      <Filter>BlinderKitten\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UI\CIEColorPicker.h">
       <Filter>BlinderKitten\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\Clock.h">

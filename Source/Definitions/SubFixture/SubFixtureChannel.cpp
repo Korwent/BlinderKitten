@@ -211,6 +211,15 @@ void SubFixtureChannel::writeValue(float v) {
 								}
 								if (intensityChannel != nullptr && parentSubFixture->channelsMap.contains(intensityChannel)) {
 									intensity = parentSubFixture->channelsMap.getReference(intensityChannel)->currentValue;
+									// If the intensity channel is a virtual master of the RGB channels,
+									// intensity is already baked into r, g, b via the virtual master mechanism.
+									// Passing it again to computeEmitterDMXLevels would apply it twice.
+									if (parentSubFixture->channelsMap.contains(redChannel)) {
+										SubFixtureChannel* redSFC = parentSubFixture->channelsMap.getReference(redChannel);
+										if (redSFC->virtualMaster != nullptr && redSFC->virtualMaster->channelType == intensityChannel) {
+											intensity = 1.0f;
+										}
+									}
 								}
 								
 								// Compute calibrated DMX levels for all emitters 
@@ -220,6 +229,17 @@ void SubFixtureChannel::writeValue(float v) {
 								// If this channel is in the calibrated results, use that value instead
 								if (emitterDMXLevels.contains(this)) {
 									localValue = emitterDMXLevels.getReference(this);
+								}
+
+								// Mark all OTHER calibrated sibling channels dirty so they also
+								// get their calibrated DMX values written in this update cycle.
+								// Without this, only the currently-triggered channel would be
+								// updated while siblings keep stale/residual DMX outputs.
+								for (auto it = emitterDMXLevels.begin(); it != emitterDMXLevels.end(); it.next()) {
+									SubFixtureChannel* sibling = it.getKey();
+									if (sibling != nullptr && sibling != this && !sibling->isDirty) {
+										sibling->isDirty = true;
+									}
 								}
 							}
 						}

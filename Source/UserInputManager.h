@@ -16,6 +16,8 @@ class Command;
 class ChannelType;
 class Programmer;
 class Preset;
+class ColorPalette;
+class ColorPaletteValue;
 
 //#include "Definitions/Programmer/Programmer.h"
 

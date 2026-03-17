@@ -198,7 +198,89 @@ void LayoutViewer::selectLayout(Layout* l)
 	else {
 		selectedLayout = nullptr;
 	}
+	rebuildGroupList();
+	resized();
 	repaint();
+}
+
+void LayoutViewer::rebuildGroupList()
+{
+	groupButtons.clear();
+	groupIds.clear();
+
+	if (selectedLayout == nullptr) return;
+
+	Array<int> seen;
+	for (auto& path : selectedLayout->paths.items) {
+		for (auto& sel : path->selection.items) {
+			if (sel->targetType->getValue().toString() == "group") {
+				int gid = sel->valueFrom->intValue();
+				if (!seen.contains(gid)) {
+					seen.add(gid);
+				}
+				if (sel->thru->boolValue()) {
+					int gidTo = sel->valueTo->intValue();
+					for (int i = jmin(gid, gidTo); i <= jmax(gid, gidTo); i++) {
+						if (!seen.contains(i)) {
+							seen.add(i);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	seen.sort();
+	for (int i = 0; i < seen.size(); i++) {
+		int gid = seen[i];
+		Group* grp = Brain::getInstance()->getGroupById(gid);
+		String label = "Group " + String(gid);
+		if (grp != nullptr && grp->userName->stringValue().isNotEmpty()) {
+			label = grp->userName->stringValue();
+		}
+		else if (grp != nullptr) {
+			label = grp->niceName;
+		}
+		TextButton* btn = new TextButton(label);
+		btn->setWantsKeyboardFocus(false);
+		btn->setClickingTogglesState(false);
+		btn->addMouseListener(this, false);
+		btn->onClick = [this, gid]() {
+			UserInputManager::getInstance()->gridViewCellPressed("group", gid);
+		};
+		addAndMakeVisible(btn);
+		groupButtons.add(btn);
+		groupIds.add(gid);
+	}
+}
+
+void LayoutViewer::updateGroupButtonStates()
+{
+	Programmer* prog = UserInputManager::getInstance()->getProgrammer(false);
+	for (int i = 0; i < groupButtons.size(); i++) {
+		int gid = groupIds[i];
+		bool selected = false;
+		if (prog != nullptr && prog->currentUserCommand != nullptr) {
+			for (auto& sel : prog->currentUserCommand->selection.items) {
+				if (sel->targetType->getValueData() == "group") {
+					int from = sel->valueFrom->intValue();
+					if (sel->thru->boolValue()) {
+						int to = sel->valueTo->intValue();
+						if (gid >= jmin(from, to) && gid <= jmax(from, to)) { selected = true; break; }
+					} else {
+						if (from == gid) { selected = true; break; }
+					}
+				}
+			}
+		}
+		if (selected) {
+			groupButtons[i]->setColour(TextButton::buttonColourId, Colour(80, 120, 200));
+			groupButtons[i]->setColour(TextButton::textColourOffId, Colours::white);
+		} else {
+			groupButtons[i]->removeColour(TextButton::buttonColourId);
+			groupButtons[i]->removeColour(TextButton::textColourOffId);
+		}
+	}
 }
 
 void LayoutViewer::resized()
@@ -214,6 +296,13 @@ void LayoutViewer::resized()
 	editMode.setBounds(hr.removeFromLeft(80).reduced(2));
 	viewCoords.setBounds(hr.removeFromLeft(80).reduced(2));
 	exportBtn.setBounds(hr.removeFromLeft(80).reduced(2));
+
+	if (groupButtons.size() > 0) {
+		Rectangle<int> groupArea = r.removeFromLeft(groupListWidth);
+		for (int i = 0; i < groupButtons.size(); i++) {
+			groupButtons[i]->setBounds(groupArea.removeFromTop(24).reduced(2));
+		}
+	}
 
 	if (selectedLayout != nullptr) {
 		selectedLayout->sizeChanged();
@@ -232,6 +321,22 @@ void LayoutViewer::mouseExit(const MouseEvent& e)
 
 void LayoutViewer::mouseDown(const MouseEvent& e)
 {
+	// Intercept clicks on group list buttons
+	for (int i = 0; i < groupButtons.size(); i++) {
+		if (e.eventComponent == groupButtons[i]) {
+			if (e.mods.isRightButtonDown()) {
+				int gid = groupIds[i];
+				Programmer* prog = UserInputManager::getInstance()->getProgrammer(true);
+				prog->checkCurrentUserCommand();
+				prog->getTextCommand();
+				prog->processUserInput("-");
+				prog->processUserInput("group");
+				prog->processUserInput(String(gid));
+			}
+			return;
+		}
+	}
+
 	if (selectedLayout == nullptr) {return;}
 
 	int x = e.getMouseDownX();
@@ -247,6 +352,28 @@ void LayoutViewer::mouseDown(const MouseEvent& e)
 		ClicAction a = colourToAction.getReference(c);
 
 		if (a == CLIC_SELECT) {
+			if (e.mods.isRightButtonDown()) {
+				Programmer* prog = UserInputManager::getInstance()->getProgrammer(true);
+				prog->checkCurrentUserCommand();
+				prog->getTextCommand();
+				if (colourToFixture.contains(c)) {
+					Fixture* f = colourToFixture.getReference(c);
+					prog->processUserInput("-");
+					prog->processUserInput("fixture");
+					prog->processUserInput(String(f->id->intValue()));
+				}
+				else if (colourToSubFixture.contains(c)) {
+					SubFixture* sf = colourToSubFixture.getReference(c);
+					prog->processUserInput("-");
+					prog->processUserInput("fixture");
+					prog->processUserInput(String(sf->parentFixture->id->intValue()));
+					if (sf->parentFixture->subFixtures.size() > 1) {
+						prog->processUserInput("subfixture");
+						prog->processUserInput(String(sf->subId));
+					}
+				}
+				return;
+			}
 			if (colourToFixture.contains(c)) {
 				Fixture* f = colourToFixture.getReference(c);
 				UserInputManager::getInstance()->gridViewCellPressed("fixture",f->id->intValue());
@@ -506,6 +633,8 @@ void LayoutViewer::clickTracker(const MouseEvent& e)
 
 void LayoutViewer::changeListenerCallback(ChangeBroadcaster* source)
 {
+	rebuildGroupList();
+	resized();
 	repaint();
 }
 
@@ -569,7 +698,9 @@ void LayoutViewer::paint(Graphics& g)
 
 	Rectangle<float> layoutZone;
 	float layoutRatio = abs(layoutWidth / layoutHeight);
-	float windowRatio = (float)getWidth() / ((float)getHeight()-20);
+	float groupOffset = groupButtons.size() > 0 ? (float)groupListWidth : 0.0f;
+	float availableWidth = (float)getWidth() - groupOffset;
+	float windowRatio = availableWidth / ((float)getHeight()-20);
 	float originX = 0;
 	float originY = 0;
 	float width = 0;
@@ -578,8 +709,8 @@ void LayoutViewer::paint(Graphics& g)
 
 	if (layoutRatio > windowRatio) {
 		// crop top and bottom;
-		originX = 0;
-		width = getWidth();
+		originX = groupOffset;
+		width = availableWidth;
 		height = width / layoutRatio;
 		originY = getHeight() - height;
 		originY /= 2;
@@ -589,8 +720,7 @@ void LayoutViewer::paint(Graphics& g)
 		originY = 20;
 		height = getHeight()-20;
 		width = height * layoutRatio;
-		originX = getWidth()-width;
-		originX /= 2;
+		originX = groupOffset + (availableWidth - width) / 2.0f;
 	}
 
 	topLeftX = originX;
@@ -1450,6 +1580,7 @@ void LayoutViewer::itemDropped(const SourceDetails& source)
 
 void LayoutViewer::timerCallback()
 {
+	updateGroupButtonStates();
 	if (selectedLayout != nullptr && selectedLayout->viewOutput->boolValue()) {
 		repaint();
 	}
