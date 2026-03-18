@@ -167,6 +167,7 @@
     <ClCompile Include="..\..\Source\UI\GridView\MapperGridView.cpp"/>
     <ClCompile Include="..\..\Source\UI\GridView\PresetGridView.cpp"/>
     <ClCompile Include="..\..\Source\UI\GridView\ColorSwatchGridView.cpp"/>
+    <ClCompile Include="..\..\Source\UI\GridView\ColorPaletteGridView.cpp"/>
     <ClCompile Include="..\..\Source\UI\PatchSheet\PatchSheet.cpp"/>
     <ClCompile Include="..\..\Source\UI\PatchSheet\PatchSheetLine.cpp"/>
     <ClCompile Include="..\..\Source\UI\VirtualButtons\VirtualButton.cpp"/>
@@ -190,6 +191,7 @@
     <ClCompile Include="..\..\Source\UI\InputPanel.cpp"/>
     <ClCompile Include="..\..\Source\UI\LabelAndTime.cpp"/>
     <ClCompile Include="..\..\Source\UI\LayoutViewer.cpp"/>
+    <ClCompile Include="..\..\Source\UI\ColorPaletteContentView.cpp"/>
     <ClCompile Include="..\..\Source\Common\Action\Action.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -474,6 +476,10 @@
     <ClCompile Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManager.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManagerUI.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchValue.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteItem.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPalette.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManager.cpp"/>
+    <ClCompile Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManagerUI.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Programmer\Programmer.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Programmer\ProgrammerManager.cpp"/>
     <ClCompile Include="..\..\Source\Definitions\Programmer\ProgrammerManagerUI.cpp"/>
@@ -3526,6 +3532,7 @@
     <ClInclude Include="..\..\Source\UI\GridView\MapperGridView.h"/>
     <ClInclude Include="..\..\Source\UI\GridView\PresetGridView.h"/>
     <ClInclude Include="..\..\Source\UI\GridView\ColorSwatchGridView.h"/>
+    <ClInclude Include="..\..\Source\UI\GridView\ColorPaletteGridView.h"/>
     <ClInclude Include="..\..\Source\UI\PatchSheet\PatchSheet.h"/>
     <ClInclude Include="..\..\Source\UI\PatchSheet\PatchSheetLine.h"/>
     <ClInclude Include="..\..\Source\UI\VirtualButtons\VirtualButton.h"/>
@@ -3549,6 +3556,7 @@
     <ClInclude Include="..\..\Source\UI\InputPanel.h"/>
     <ClInclude Include="..\..\Source\UI\LabelAndTime.h"/>
     <ClInclude Include="..\..\Source\UI\LayoutViewer.h"/>
+    <ClInclude Include="..\..\Source\UI\ColorPaletteContentView.h"/>
     <ClInclude Include="..\..\Source\Common\Action\Action.h"/>
     <ClInclude Include="..\..\Source\Common\Action\ActionManager.h"/>
     <ClInclude Include="..\..\Source\Common\CommonClasses\ComponentType.h"/>
@@ -3715,6 +3723,10 @@
     <ClInclude Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManager.h"/>
     <ClInclude Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchManagerUI.h"/>
     <ClInclude Include="..\..\Source\Definitions\ColorSwatch\ColorSwatchValue.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteItem.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPalette.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManager.h"/>
+    <ClInclude Include="..\..\Source\Definitions\ColorPalette\ColorPaletteManagerUI.h"/>
     <ClInclude Include="..\..\Source\Definitions\Programmer\Programmer.h"/>
     <ClInclude Include="..\..\Source\Definitions\Programmer\ProgrammerManager.h"/>
     <ClInclude Include="..\..\Source\Definitions\Programmer\ProgrammerManagerUI.h"/>

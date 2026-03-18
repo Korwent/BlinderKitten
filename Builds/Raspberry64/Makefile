@@ -86,6 +86,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/MapperGridView_2ac6085e.o \
   $(JUCE_OBJDIR)/PresetGridView_d172ffc.o \
   $(JUCE_OBJDIR)/ColorSwatchGridView_7c013e42.o \
+  $(JUCE_OBJDIR)/ColorPaletteGridView_4d295775.o \
   $(JUCE_OBJDIR)/PatchSheet_2c03483d.o \
   $(JUCE_OBJDIR)/PatchSheetLine_d2553e51.o \
   $(JUCE_OBJDIR)/VirtualButton_57e0460.o \
@@ -109,6 +110,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/InputPanel_276fbbd6.o \
   $(JUCE_OBJDIR)/LabelAndTime_69a3566c.o \
   $(JUCE_OBJDIR)/LayoutViewer_b08c5698.o \
+  $(JUCE_OBJDIR)/ColorPaletteContentView_357d9354.o \
   $(JUCE_OBJDIR)/list_ports_linux_203b2613.o \
   $(JUCE_OBJDIR)/list_ports_osx_d93ade33.o \
   $(JUCE_OBJDIR)/list_ports_win_e6502c6b.o \
@@ -222,6 +224,10 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/ColorSwatchManager_24bdf176.o \
   $(JUCE_OBJDIR)/ColorSwatchManagerUI_2e07e5ca.o \
   $(JUCE_OBJDIR)/ColorSwatchValue_d33463a.o \
+  $(JUCE_OBJDIR)/ColorPaletteItem_e61537f4.o \
+  $(JUCE_OBJDIR)/ColorPalette_43b0c041.o \
+  $(JUCE_OBJDIR)/ColorPaletteManager_53e018b6.o \
+  $(JUCE_OBJDIR)/ColorPaletteManagerUI_1d3d3d0a.o \
   $(JUCE_OBJDIR)/Programmer_37f4f5c1.o \
   $(JUCE_OBJDIR)/ProgrammerManager_59fcb336.o \
   $(JUCE_OBJDIR)/ProgrammerManagerUI_e9d378a.o \
@@ -357,6 +363,11 @@ $(JUCE_OBJDIR)/ColorSwatchGridView_7c013e42.o: ../../Source/UI/GridView/ColorSwa
 	@echo "Compiling ColorSwatchGridView.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
+$(JUCE_OBJDIR)/ColorPaletteGridView_4d295775.o: ../../Source/UI/GridView/ColorPaletteGridView.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling ColorPaletteGridView.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
 $(JUCE_OBJDIR)/PatchSheet_2c03483d.o: ../../Source/UI/PatchSheet/PatchSheet.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling PatchSheet.cpp"
@@ -470,6 +481,11 @@ $(JUCE_OBJDIR)/LabelAndTime_69a3566c.o: ../../Source/UI/LabelAndTime.cpp
 $(JUCE_OBJDIR)/LayoutViewer_b08c5698.o: ../../Source/UI/LayoutViewer.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling LayoutViewer.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/ColorPaletteContentView_357d9354.o: ../../Source/UI/ColorPaletteContentView.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling ColorPaletteContentView.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/list_ports_linux_203b2613.o: ../../Source/Common/Serial/lib/serial/impl/list_ports/list_ports_linux.cc
@@ -1035,6 +1051,26 @@ $(JUCE_OBJDIR)/ColorSwatchManagerUI_2e07e5ca.o: ../../Source/Definitions/ColorSw
 $(JUCE_OBJDIR)/ColorSwatchValue_d33463a.o: ../../Source/Definitions/ColorSwatch/ColorSwatchValue.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling ColorSwatchValue.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/ColorPaletteItem_e61537f4.o: ../../Source/Definitions/ColorPalette/ColorPaletteItem.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling ColorPaletteItem.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/ColorPalette_43b0c041.o: ../../Source/Definitions/ColorPalette/ColorPalette.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling ColorPalette.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/ColorPaletteManager_53e018b6.o: ../../Source/Definitions/ColorPalette/ColorPaletteManager.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling ColorPaletteManager.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/ColorPaletteManagerUI_1d3d3d0a.o: ../../Source/Definitions/ColorPalette/ColorPaletteManagerUI.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling ColorPaletteManagerUI.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/Programmer_37f4f5c1.o: ../../Source/Definitions/Programmer/Programmer.cpp

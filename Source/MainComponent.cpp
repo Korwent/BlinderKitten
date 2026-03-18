@@ -35,8 +35,11 @@
 #include "UI/GridView/CarouselGridView.h"
 #include "UI/GridView/MapperGridView.h"
 #include "UI/GridView/ColorSwatchGridView.h"
+#include "UI/GridView/ColorPaletteGridView.h"
 
 #include "Definitions/ColorSwatch/ColorSwatchManagerUI.h"
+#include "Definitions/ColorPalette/ColorPaletteManagerUI.h"
+#include "UI/ColorPaletteContentView.h"
 
 #include "UI/VirtualButtons/VirtualButtonManagerUI.h"
 #include "UI/VirtualButtons/VirtualButtonGrid.h"
@@ -153,6 +156,9 @@ void MainContentComponent::init()
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Mapper Grid", &MapperGridViewUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Color Swatches", &ColorSwatchManagerUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Color Swatch Grid", &ColorSwatchGridViewUI::create));
+    ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Color Palettes", &ColorPaletteManagerUI::create));
+    ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Color Palette Grid", &ColorPaletteGridViewUI::create));
+    ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Color Palette Content", &ColorPaletteContentView::create));
 
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Virtual buttons", &VirtualButtonManagerUI::create));
     ShapeShifterFactory::getInstance()->defs.add(new ShapeShifterDefinition("Virtual buttons grid", &VirtualButtonGridUI::create));
@@ -202,6 +208,9 @@ void MainContentComponent::init()
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Mapper Grid", "Grids");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Color Swatches", "Lists");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Color Swatch Grid", "Grids");
+    ShapeShifterManager::getInstance()->isInViewSubMenu.set("Color Palettes", "Lists");
+    ShapeShifterManager::getInstance()->isInViewSubMenu.set("Color Palette Grid", "Grids");
+    ShapeShifterManager::getInstance()->isInViewSubMenu.set("Color Palette Content", "Grids");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Virtual buttons", "Lists");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Virtual buttons grid", "Playback");
     ShapeShifterManager::getInstance()->isInViewSubMenu.set("Virtual faders", "Lists");

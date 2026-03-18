@@ -79,6 +79,10 @@
                 file="Source/UI/GridView/ColorSwatchGridView.cpp"/>
           <FILE id="bDPL02" name="ColorSwatchGridView.h" compile="0" resource="0"
                 file="Source/UI/GridView/ColorSwatchGridView.h"/>
+          <FILE id="cPGV01" name="ColorPaletteGridView.cpp" compile="1" resource="0"
+                file="Source/UI/GridView/ColorPaletteGridView.cpp"/>
+          <FILE id="cPGV02" name="ColorPaletteGridView.h" compile="0" resource="0"
+                file="Source/UI/GridView/ColorPaletteGridView.h"/>
         </GROUP>
         <GROUP id="{EE0113DF-BAB4-232C-8F2E-7452E78EBD3E}" name="PatchSheet">
           <FILE id="w51wJU" name="PatchSheet.cpp" compile="1" resource="0" file="Source/UI/PatchSheet/PatchSheet.cpp"/>
@@ -163,6 +167,10 @@
         <FILE id="U9IfWo" name="LayoutViewer.cpp" compile="1" resource="0"
               file="Source/UI/LayoutViewer.cpp"/>
         <FILE id="j7853L" name="LayoutViewer.h" compile="0" resource="0" file="Source/UI/LayoutViewer.h"/>
+        <FILE id="cPCV01" name="ColorPaletteContentView.cpp" compile="1" resource="0"
+              file="Source/UI/ColorPaletteContentView.cpp"/>
+        <FILE id="cPCV02" name="ColorPaletteContentView.h" compile="0" resource="0"
+              file="Source/UI/ColorPaletteContentView.h"/>
       </GROUP>
       <GROUP id="{45FB759F-EFE9-4473-37EC-722C12285C7E}" name="Common">
         <GROUP id="{FFFFEE64-A9BA-CAEB-F127-B70753B6745E}" name="Action">
@@ -813,6 +821,16 @@
           <FILE id="cPAL06" name="ColorSwatchManagerUI.h" compile="0" resource="0" file="Source/Definitions/ColorSwatch/ColorSwatchManagerUI.h"/>
           <FILE id="cPAL07" name="ColorSwatchValue.cpp" compile="1" resource="0" file="Source/Definitions/ColorSwatch/ColorSwatchValue.cpp"/>
           <FILE id="cPAL08" name="ColorSwatchValue.h" compile="0" resource="0" file="Source/Definitions/ColorSwatch/ColorSwatchValue.h"/>
+        </GROUP>
+        <GROUP id="{B2C3D4E5-F6A7-B8C9-D0E1-F2A3B4C5D6E7}" name="ColorPalette">
+          <FILE id="cPPI01" name="ColorPaletteItem.cpp" compile="1" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteItem.cpp"/>
+          <FILE id="cPPI02" name="ColorPaletteItem.h" compile="0" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteItem.h"/>
+          <FILE id="cPPL01" name="ColorPalette.cpp" compile="1" resource="0" file="Source/Definitions/ColorPalette/ColorPalette.cpp"/>
+          <FILE id="cPPL02" name="ColorPalette.h" compile="0" resource="0" file="Source/Definitions/ColorPalette/ColorPalette.h"/>
+          <FILE id="cPPM01" name="ColorPaletteManager.cpp" compile="1" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteManager.cpp"/>
+          <FILE id="cPPM02" name="ColorPaletteManager.h" compile="0" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteManager.h"/>
+          <FILE id="cPPMU1" name="ColorPaletteManagerUI.cpp" compile="1" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteManagerUI.cpp"/>
+          <FILE id="cPPMU2" name="ColorPaletteManagerUI.h" compile="0" resource="0" file="Source/Definitions/ColorPalette/ColorPaletteManagerUI.h"/>
         </GROUP>
         <GROUP id="{3CCC073F-169E-F72B-605F-F3D382B83A11}" name="Programmer">
           <FILE id="eSTduU" name="Programmer.cpp" compile="1" resource="0" file="Source/Definitions/Programmer/Programmer.cpp"/>

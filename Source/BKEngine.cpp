@@ -31,6 +31,7 @@
 #include "./Definitions/Group/GroupManager.h"
 #include "./Definitions/Preset/PresetManager.h"
 #include "./Definitions/ColorSwatch/ColorSwatchManager.h"
+#include "./Definitions/ColorPalette/ColorPaletteManager.h"
 #include "./Definitions/Command/CommandManager.h"
 #include "./Definitions/Cuelist/CuelistManager.h"
 #include "./Definitions/Programmer/ProgrammerManager.h"
@@ -69,6 +70,7 @@
 #include "UI/GridView/GroupGridView.h"
 #include "UI/GridView/PresetGridView.h"
 #include "UI/GridView/ColorSwatchGridView.h"
+#include "UI/GridView/ColorPaletteGridView.h"
 #include "UI/GridView/CuelistGridView.h"
 #include "UI/GridView/EffectGridView.h"
 #include "UI/GridView/CarouselGridView.h"
@@ -287,6 +289,7 @@ BKEngine::BKEngine() :
 	addChildControllableContainer(GroupManager::getInstance());
 	addChildControllableContainer(PresetManager::getInstance());
 	addChildControllableContainer(ColorSwatchManager::getInstance());
+	addChildControllableContainer(ColorPaletteManager::getInstance());
 	addChildControllableContainer(CommandManager::getInstance());
 	addChildControllableContainer(CuelistManager::getInstance());
 	addChildControllableContainer(ProgrammerManager::getInstance());
@@ -315,6 +318,7 @@ BKEngine::BKEngine() :
 	GroupGridView::getInstance()->engine = this;
 	PresetGridView::getInstance()->engine = this;
 	ColorSwatchGridView::getInstance()->engine = this;
+	ColorPaletteGridView::getInstance()->engine = this;
 	CuelistGridView::getInstance()->engine = this;
 	EffectGridView::getInstance()->engine = this;
 	CarouselGridView::getInstance()->engine = this;
@@ -396,6 +400,7 @@ BKEngine::~BKEngine()
 	GroupGridView::deleteInstance();
 	PresetGridView::deleteInstance();
 	ColorSwatchGridView::deleteInstance();
+	ColorPaletteGridView::deleteInstance();
 	CuelistGridView::deleteInstance();
 	EffectGridView::deleteInstance();
 	CarouselGridView::deleteInstance();
@@ -424,6 +429,7 @@ BKEngine::~BKEngine()
 	CommandManager::deleteInstance();
 	PresetManager::deleteInstance();
 	ColorSwatchManager::deleteInstance();
+	ColorPaletteManager::deleteInstance();
 	GroupManager::deleteInstance();
 	FixtureManager::deleteInstance();
 	FixtureTypeManager::deleteInstance();
@@ -492,6 +498,7 @@ void BKEngine::clearInternal()
 	CommandManager::getInstance()->clear();
 	PresetManager::getInstance()->clear();
 	ColorSwatchManager::getInstance()->clear();
+	ColorPaletteManager::getInstance()->clear();
 	GroupManager::getInstance()->clear();
 	FixtureManager::getInstance()->clear();
 	FixtureTypeManager::getInstance()->clear();
@@ -509,6 +516,7 @@ void BKEngine::clearInternal()
 	GroupGridView::getInstance()->updateCells();
 	PresetGridView::getInstance()->updateCells();
 	ColorSwatchGridView::getInstance()->updateCells();
+	ColorPaletteGridView::getInstance()->updateCells();
 	CuelistGridView::getInstance()->updateCells();
 	EffectGridView::getInstance()->updateCells();
 	CarouselGridView::getInstance()->updateCells();
@@ -596,6 +604,9 @@ var BKEngine::getJSONData(bool includeNonOverriden)
 
 	var cpltData = ColorSwatchManager::getInstance()->getJSONData(includeNonOverriden);
 	if (!cpltData.isVoid() && cpltData.getDynamicObject()->getProperties().size() > 0) data.getDynamicObject()->setProperty(ColorSwatchManager::getInstance()->shortName, cpltData);
+
+	var cplpData = ColorPaletteManager::getInstance()->getJSONData(includeNonOverriden);
+	if (!cplpData.isVoid() && cplpData.getDynamicObject()->getProperties().size() > 0) data.getDynamicObject()->setProperty(ColorPaletteManager::getInstance()->shortName, cplpData);
 
 	var dData = FixtureManager::getInstance()->getJSONData(includeNonOverriden);
 	if (!dData.isVoid() && dData.getDynamicObject()->getProperties().size() > 0) data.getDynamicObject()->setProperty(FixtureManager::getInstance()->shortName, dData);
@@ -732,6 +743,12 @@ void BKEngine::loadJSONDataInternalEngine(var data, ProgressTask* loadingTask)
 	cpltTask->setProgress(1);
 	cpltTask->end();
 
+	ProgressTask* cplpTask = loadingTask->addTask("Color Palette Manager");
+	cplpTask->start();
+	ColorPaletteManager::getInstance()->loadJSONData(data.getProperty(ColorPaletteManager::getInstance()->shortName, var()));
+	cplpTask->setProgress(1);
+	cplpTask->end();
+
 	dTask->start();
 	FixtureManager::getInstance()->loadJSONData(data.getProperty(FixtureManager::getInstance()->shortName, var()));
 	dTask->setProgress(1);
@@ -841,9 +858,11 @@ void BKEngine::loadJSONDataInternalEngine(var data, ProgressTask* loadingTask)
 	GroupGridView::getInstance()->updateCells();
 	PresetGridView::getInstance()->updateCells();
 	ColorSwatchGridView::getInstance()->updateCells();
+	ColorPaletteGridView::getInstance()->updateCells();
 	GroupGridView::getInstance()->updateCells();
 	PresetGridView::getInstance()->updateCells();
 	ColorSwatchGridView::getInstance()->updateCells();
+	ColorPaletteGridView::getInstance()->updateCells();
 	CuelistGridView::getInstance()->updateCells();
 	EffectGridView::getInstance()->updateCells();
 	CarouselGridView::getInstance()->updateCells();
@@ -870,6 +889,7 @@ void BKEngine::loadJSONDataInternalEngine(var data, ProgressTask* loadingTask)
 
 	// Re-update color swatch grid now that CP channels are resolved
 	ColorSwatchGridView::getInstance()->updateCells();
+	ColorPaletteGridView::getInstance()->updateCells();
 
 	ConductorInfos::getInstance()->linkFadeSlider();
 	ConductorInfos::getInstance()->updateStyle();
@@ -961,6 +981,7 @@ void BKEngine::importMochi(var data)
 	GroupManager::getInstance()->addItemsFromData(data.getProperty(GroupManager::getInstance()->shortName, var()));
 	PresetManager::getInstance()->addItemsFromData(data.getProperty(PresetManager::getInstance()->shortName, var()));
 	ColorSwatchManager::getInstance()->addItemsFromData(data.getProperty(ColorSwatchManager::getInstance()->shortName, var()));
+	ColorPaletteManager::getInstance()->addItemsFromData(data.getProperty(ColorPaletteManager::getInstance()->shortName, var()));
 	CommandManager::getInstance()->addItemsFromData(data.getProperty(CommandManager::getInstance()->shortName, var()));
 	CuelistManager::getInstance()->addItemsFromData(data.getProperty(CuelistManager::getInstance()->shortName, var()));
 	ProgrammerManager::getInstance()->addItemsFromData(data.getProperty(ProgrammerManager::getInstance()->shortName, var()));
@@ -985,6 +1006,7 @@ void BKEngine::importMochi(var data)
 	GroupGridView::getInstance()->updateCells();
 	PresetGridView::getInstance()->updateCells();
 	ColorSwatchGridView::getInstance()->updateCells();
+	ColorPaletteGridView::getInstance()->updateCells();
 	CuelistGridView::getInstance()->updateCells();
 	EffectGridView::getInstance()->updateCells();
 	CarouselGridView::getInstance()->updateCells();

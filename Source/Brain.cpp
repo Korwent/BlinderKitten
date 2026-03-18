@@ -19,6 +19,7 @@
 #include "Definitions/Cuelist/Cuelist.h"
 #include "Definitions/Preset/Preset.h"
 #include "Definitions/ColorSwatch/ColorSwatch.h"
+#include "Definitions/ColorPalette/ColorPalette.h"
 #include "Definitions/Programmer/Programmer.h"
 #include "Definitions/CurvePreset/CurvePreset.h"
 #include "Definitions/TimingPreset/TimingPreset.h"
@@ -43,6 +44,7 @@
 #include "UI/GridView/GroupGridView.h"
 #include "UI/GridView/PresetGridView.h"
 #include "UI/GridView/ColorSwatchGridView.h"
+#include "UI/GridView/ColorPaletteGridView.h"
 #include "UI/GridView/CuelistGridView.h"
 #include "UI/GridView/EffectGridView.h"
 #include "UI/GridView/CarouselGridView.h"
@@ -563,6 +565,38 @@ void Brain::unregisterColorSwatch(ColorSwatch* cp) {
     }
     if (!Brain::getInstance()->isClearing && ColorSwatchGridView::getInstanceWithoutCreating() != nullptr)
         ColorSwatchGridView::getInstance()->updateCells();
+}
+
+void Brain::registerColorPalette(ColorPalette* target, int askedId) {
+    int currentId = target->registeredId;
+    if (colorPalettes.getReference(askedId) == target) { return; }
+    if (colorPalettes.containsValue(target)) {
+        colorPalettes.removeValue(target);
+    }
+    ColorPalette* toSwap = colorPalettes.contains(askedId) ? colorPalettes.getReference(askedId) : nullptr;
+    bool idIsOk = false;
+    int newId = askedId;
+    if (target->isCurrentlyLoadingData && toSwap != nullptr) {
+        toSwap->id->setValue(currentId);
+        idIsOk = true;
+    }
+    int delta = askedId < currentId ? -1 : 1;
+    while (!idIsOk && newId > 0) {
+        idIsOk = colorPalettes.getReference(newId) == nullptr;
+        if (!idIsOk) newId += delta;
+    }
+    if (!idIsOk) { newId = currentId; }
+    colorPalettes.set(newId, target);
+    target->id->setValue(newId);
+    target->registeredId = newId;
+}
+
+void Brain::unregisterColorPalette(ColorPalette* cp) {
+    if (colorPalettes.containsValue(cp)) {
+        colorPalettes.removeValue(cp);
+    }
+    if (!Brain::getInstance()->isClearing && ColorPaletteGridView::getInstanceWithoutCreating() != nullptr)
+        ColorPaletteGridView::getInstance()->updateCells();
 }
 
 void Brain::registerCuelist(Cuelist* p, int id, bool swap) {
@@ -1469,6 +1503,13 @@ Preset* Brain::getPresetById(int id, bool followIfAnother) {
 ColorSwatch* Brain::getColorSwatchById(int id) {
     if (colorSwatches.contains(id)) {
         return colorSwatches.getReference(id);
+    }
+    return nullptr;
+}
+
+ColorPalette* Brain::getColorPaletteById(int id) {
+    if (colorPalettes.contains(id)) {
+        return colorPalettes.getReference(id);
     }
     return nullptr;
 }

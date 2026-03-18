@@ -23,6 +23,7 @@ class Cue;
 class Cuelist;
 class Preset;
 class ColorSwatch;
+class ColorPalette;
 class Programmer;
 class CurvePreset;
 class TimingPreset;
@@ -55,6 +56,7 @@ public:
     HashMap<int, Fixture*>fixtures;
     HashMap<int, Preset*>presets;
     HashMap<int, ColorSwatch*>colorSwatches;
+    HashMap<int, ColorPalette*>colorPalettes;
     HashMap<int, Cuelist*>cuelists;
     HashMap<int, Programmer*>programmers;
     HashMap<int, CurvePreset*>curvePresets;
@@ -141,6 +143,8 @@ public:
     void unregisterPreset(Preset* p);
     void registerColorSwatch(ColorSwatch* cp, int id);
     void unregisterColorSwatch(ColorSwatch* cp);
+    void registerColorPalette(ColorPalette* cp, int id);
+    void unregisterColorPalette(ColorPalette* cp);
     void registerCuelist(Cuelist* c, int id, bool swap = false);
     void unregisterCuelist(Cuelist* c);
     void registerProgrammer(Programmer* p, int id, bool swap = false);
@@ -190,6 +194,7 @@ public:
     Group* getGroupById(int id, bool followIfAnother = false);
     Preset* getPresetById(int id, bool followIfAnother = false);
     ColorSwatch* getColorSwatchById(int id);
+    ColorPalette* getColorPaletteById(int id);
     Cuelist* getCuelistById(int id);
     Programmer* getProgrammerById(int id);
     CurvePreset* getCurvePresetById(int id);

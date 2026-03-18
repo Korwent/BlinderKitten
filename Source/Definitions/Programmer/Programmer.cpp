@@ -94,6 +94,7 @@ Programmer::Programmer(var params) :
 	cliParamAType->addOption("Carousel", "carousel");
 	cliParamAType->addOption("Mapper", "mapper");
 	cliParamAType->addOption("Color Swatch", "colorswatch");
+	cliParamAType->addOption("Color Palette", "colorpalette");
 	cliParamAType->addOption("Virtual button", "virtualbutton");
 	cliParamAType->addOption("Virtual fader column", "virtualfadercol");
 	cliParamAType->addOption("Virtual fader element", "virtualfaderelement");
@@ -109,6 +110,7 @@ Programmer::Programmer(var params) :
 	cliParamBType->addOption("Carousel", "carousel");
 	cliParamBType->addOption("Mapper", "mapper");
 	cliParamBType->addOption("Color Swatch", "colorswatch");
+	cliParamBType->addOption("Color Palette", "colorpalette");
 	cliParamBType->addOption("Virtual button", "virtualbutton");
 	cliParamBType->addOption("Virtual fader column", "virtualfadercol");
 	cliParamBType->addOption("Virtual fader element", "virtualfaderelement");

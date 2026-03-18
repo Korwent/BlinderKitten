@@ -19,6 +19,7 @@
 #include "Definitions/Preset/Preset.h"
 #include "Definitions/ColorSwatch/ColorSwatch.h"
 #include "Definitions/ColorSwatch/ColorSwatchValue.h"
+#include "Definitions/ColorPalette/ColorPalette.h"
 #include "Definitions/Programmer/Programmer.h"
 #include "Definitions/Programmer/ProgrammerManager.h"
 #include "Definitions/Command/Command.h"
@@ -1007,6 +1008,13 @@ void UserInputManager::gridViewCellPressed(String type, int id) {
 				ChannelType* ct = dynamic_cast<ChannelType*>(cpv->channelType->targetContainer.get());
 				if (ct != nullptr) changeChannelValue(ct, cpv->paramValue->getValue());
 			}
+		}
+	}
+	else if (type == "colorpalette") {
+		ColorPalette* cp = Brain::getInstance()->getColorPaletteById(id);
+		if (cp != nullptr) {
+			if (cp->selectionManager != nullptr) cp->selectionManager->clearSelection(false);
+			cp->selectThis();
 		}
 	}
 }

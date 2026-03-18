@@ -35,6 +35,9 @@
 #include "../ColorSwatch/ColorSwatchManager.h"
 #include "../ColorSwatch/ColorSwatch.h"
 #include "../ColorSwatch/ColorSwatchValue.h"
+#include "../ColorPalette/ColorPaletteManager.h"
+#include "../ColorPalette/ColorPalette.h"
+#include "../ColorPalette/ColorPaletteItem.h"
 #include "../Fixture/FixtureManager.h"
 #include "../Fixture/Fixture.h"
 #include "UserInputManager.h"
@@ -53,6 +56,7 @@
 #include "UI/GridView/GroupGridView.h"
 #include "UI/GridView/PresetGridView.h"
 #include "UI/GridView/ColorSwatchGridView.h"
+#include "UI/GridView/ColorPaletteGridView.h"
 #include "UI/GridView/CuelistGridView.h"
 #include "UI/GridView/EffectGridView.h"
 #include "UI/GridView/CarouselGridView.h"
@@ -86,6 +90,7 @@ DataTransferManager::DataTransferManager() :
     targetType->addOption("Carousel", "carousel");
     targetType->addOption("Mapper", "mapper");
     targetType->addOption("Color Swatch", "colorswatch");
+    targetType->addOption("Color Palette", "colorpalette");
     targetType->addOption("Programmer", "programmer");
     targetType->addOption("Virtual Button", "virtualbutton");
     targetType->addOption("Virtual Fader Column", "virtualfadercol");
@@ -422,6 +427,51 @@ void DataTransferManager::execute() {
             ColorSwatchGridView::getInstance()->updateCells();
             target->selectThis();
             LOG("Color Swatch recorded");
+        }
+        else if (trgType == "colorpalette") {
+            valid = true;
+            // Find the target palette
+            ColorPalette* palette = Brain::getInstance()->getColorPaletteById(tId);
+            if (palette == nullptr) {
+                palette = ColorPaletteManager::getInstance()->addItem();
+                palette->id->setValue(tId);
+                palette->userName->setValue("Color Palette " + String(tId));
+            }
+
+            // Find the next free ColorSwatch ID
+            int newSwatchId = 1;
+            while (Brain::getInstance()->getColorSwatchById(newSwatchId) != nullptr) newSwatchId++;
+
+            // Create the new ColorSwatch from programmer values
+            ColorSwatch* swatch = ColorSwatchManager::getInstance()->addItem(new ColorSwatch());
+            swatch->id->setValue(newSwatchId);
+
+            BKEngine* bke = dynamic_cast<BKEngine*>(BKEngine::mainEngine);
+            ChannelType* redCT   = bke != nullptr ? dynamic_cast<ChannelType*>(bke->CPRedChannel->targetContainer.get())   : nullptr;
+            ChannelType* greenCT = bke != nullptr ? dynamic_cast<ChannelType*>(bke->CPGreenChannel->targetContainer.get()) : nullptr;
+            ChannelType* blueCT  = bke != nullptr ? dynamic_cast<ChannelType*>(bke->CPBlueChannel->targetContainer.get())  : nullptr;
+
+            ScopedLock lock(source->computing);
+            source->computeValues();
+            for (auto it = source->computedValues.begin(); it != source->computedValues.end(); it.next()) {
+                SubFixtureChannel* chan = it.getKey();
+                std::shared_ptr<ChannelValue> cValue = it.getValue();
+                ChannelType* ct = chan->channelType;
+                if (ct == nullptr) continue;
+                if (ct != redCT && ct != greenCT && ct != blueCT) continue;
+                if (cValue->endValue() < 0) continue;
+                ColorSwatchValue* sv = swatch->values.addItem();
+                sv->channelType->setValueFromTarget(ct);
+                sv->paramValue->setValue(cValue->endValue());
+            }
+
+            // Add the swatch to the palette
+            ColorPaletteItem* item = palette->items.addItem();
+            item->colorSwatchId->setValue(newSwatchId);
+            item->setNiceName(swatch->userName->getValue().toString());
+
+            palette->selectThis();
+            LOG("Color Palette recorded");
         }
     }
     else if (srcType == "cuelist") {
