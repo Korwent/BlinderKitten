@@ -1,4 +1,6 @@
-Binaries/
+Binaries/App/BlinderKitten.exe
+Binaries/CI/
+Binaries/Debug/
 workFile_autosave
 SharedData/captureStudent_autosave/
 .vs
