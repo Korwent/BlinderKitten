@@ -53,6 +53,9 @@ BlinderKitten is a cross-platform **DMX lighting control application** for stage
 
 ## Build & Test
 
+**Never trigger a build yourself.** After adding or removing source files, resave the Projucer file (`BlinderKitten.jucer`) so the IDE projects are regenerated — but do not start a compilation. The user will build manually.
+use this command : & "J:\Dev\JUCE\extras\Projucer\Builds\VisualStudio2022\x64\Debug\App\Projucer.exe" --resave "J:\Dev\BlinderKitten\BlinderKitten.jucer"
+
 ### Windows (primary)
 
 Build via MSBuild with a Visual Studio 2022 solution:

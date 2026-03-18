@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "j:/Dev/BlinderKitten/Source/Common/ColorEngine",
-      "program": "j:/Dev/BlinderKitten/Source/Common/ColorEngine/build/Debug/outDebug",
+      "cwd": "j:/Dev/BlinderKitten/Builds/VisualStudio2022",
+      "program": "j:/Dev/BlinderKitten/Builds/VisualStudio2022/build/Release/outRelease",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

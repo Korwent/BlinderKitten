@@ -30,7 +30,8 @@ public:
 
 class PresetGridView  : 
     public GridView,
-    public PresetManager::AsyncListener
+    public PresetManager::AsyncListener,
+    public DragAndDropTarget
 {
 public:
     juce_DeclareSingleton(PresetGridView, true);
@@ -39,6 +40,9 @@ public:
     
     void updateCells() override;
     void newMessage(const PresetManager::ManagerEvent& e) override;
+
+    bool isInterestedInDragSource(const SourceDetails& source) override;
+    void itemDropped(const SourceDetails& source) override;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PresetGridView)
