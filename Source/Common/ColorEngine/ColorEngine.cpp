@@ -257,61 +257,67 @@ float ColorEngine::weightToDMXLevel(const EmitterCalibration& emitter, float wei
 {
     weight = jlimit(0.0f, 1.0f, weight);
 
-    if (emitter.typeChannel == nullptr || !emitter.typeChannel->curve.enabled->boolValue()) {
-        // No output curve: linear
-        return weight;
-    }
-
-    // Binary search for the DMX level that produces the target weight
-    float lo = 0.0f, hi = 1.0f;
-    for (int i = 0; i < 20; i++) {  // 20 iterations → precision < 1e-6
-        float mid = (lo + hi) * 0.5f;
-        float intensity = emitter.typeChannel->curve.getValueAtPosition(mid);
-        if (intensity < weight) {
-            lo = mid;
-        } else {
-            hi = mid;
-        }
-    }
-
-    return (lo + hi) * 0.5f;
+    // No calibration dimming curve implemented yet — use linear mapping.
+    // NOTE: Do NOT use emitter.typeChannel->curve here; that is the channel
+    // output automation which is already applied in the DMX write pipeline
+    // (SubFixtureChannel::writeValue). Using it here would double-apply it.
+    return weight;
 }
 
 // ===== High-Level API =====
 
+static void normalizeWeights(Array<EmitterCalibration>& emitters, Array<float>& weights,
+                             float intensity, bool constantLuminance)
+{
+    if (constantLuminance) {
+        // Compute the total luminance (Y) produced by the current weight vector.
+        // Then scale so that Y_produced == intensity * Y_max_single_emitter_avg,
+        // keeping chromaticity ratios intact.
+        float solvedY = 0.0f;
+        float maxY = 0.0f;
+        for (int i = 0; i < emitters.size() && i < weights.size(); i++) {
+            solvedY += emitters[i].fullY * weights[i];
+            maxY += emitters[i].fullY;
+        }
+        if (solvedY > 0.0f && maxY > 0.0f) {
+            float scale = intensity / solvedY;
+            // Clamp scale so no weight exceeds 1.0
+            float maxW = 0.0f;
+            for (int i = 0; i < weights.size(); i++)
+                maxW = jmax(maxW, weights[i] * scale);
+            if (maxW > 1.0f) scale /= maxW;
+            for (int i = 0; i < weights.size(); i++)
+                weights.set(i, weights[i] * scale);
+        }
+    } else {
+        // Max-weight normalization: dominant emitter = intensity
+        float maxW = 0.0f;
+        for (float w : weights) maxW = jmax(maxW, w);
+        if (maxW > 0.0f) {
+            for (int i = 0; i < weights.size(); i++)
+                weights.set(i, (weights[i] / maxW) * intensity);
+        }
+    }
+}
+
 bool ColorEngine::applyTargetColorToSubFixture(SubFixture* sf,
                                                 float r, float g, float b,
-                                                float intensity)
+                                                float intensity,
+                                                bool constantLuminance)
 {
     Array<EmitterCalibration> emitters = getCalibrations(sf);
     if (emitters.size() < 3) return false;
 
-    // Convert target sRGB + intensity to CIE XYZ
+    // Convert target sRGB to CIE XYZ (normalized, Y in 0..1 range)
     float X, Y, Z;
     sRGBtoXYZ(r, g, b, X, Y, Z);
 
-    // Scale by output intensity
-    X *= intensity;
-    Y *= intensity;
-    Z *= intensity;
-
-    // Scale by emitter luminance
-    float maxY = 0.0f;
-    for (const auto& e : emitters) {
-        maxY += e.fullY;
-    }
-
-    if (maxY > 0.0f) {
-        X = X * maxY;
-        Y = Y * maxY;
-        Z = Z * maxY;
-    }
-
-    // Solve for weights
+    // Solve for emitter weights that reproduce this chromaticity.
     Array<float> weights;
-    if (!solveEmitterWeights(emitters, X, Y, Z, weights)) {
-        // Out of gamut — still apply the best approximation
-    }
+    solveEmitterWeights(emitters, X, Y, Z, weights);
+
+    // Normalize weights according to the caller's chosen mode
+    normalizeWeights(emitters, weights, intensity, constantLuminance);
 
     // Convert weights to DMX levels and write to channels
     for (int i = 0; i < emitters.size() && i < weights.size(); i++) {
@@ -333,14 +339,10 @@ Colour ColorEngine::getCalibrationOutputColor(SubFixture* sf)
     for (const auto& e : emitters) {
         if (e.channel == nullptr) continue;
 
-        float dmxLevel = e.channel->currentValue;
-        float relativeIntensity;
-
-        if (e.typeChannel != nullptr && e.typeChannel->curve.enabled->boolValue()) {
-            relativeIntensity = e.typeChannel->curve.getValueAtPosition(dmxLevel);
-        } else {
-            relativeIntensity = dmxLevel;
-        }
+        // Use currentValue directly as relative intensity (linear).
+        // Do NOT apply typeChannel->curve here — it is the output automation
+        // already applied in the DMX write pipeline.
+        float relativeIntensity = e.channel->currentValue;
 
         totalX += e.fullX * relativeIntensity;
         totalY += e.fullY * relativeIntensity;
@@ -373,27 +375,22 @@ Colour ColorEngine::getCalibrationOutputColor(SubFixture* sf)
 bool ColorEngine::computeEmitterDMXLevels(SubFixture* sf,
                                            float r, float g, float b,
                                            float intensity,
-                                           HashMap<SubFixtureChannel*, float>& outLevels)
+                                           HashMap<SubFixtureChannel*, float>& outLevels,
+                                           bool constantLuminance)
 {
     Array<EmitterCalibration> emitters = getCalibrations(sf);
     if (emitters.size() < 3) return false;  // Not enough calibration data
 
-    // Convert target sRGB + intensity to CIE XYZ
+    // Convert target sRGB to CIE XYZ (normalized)
     float X, Y, Z;
     sRGBtoXYZ(r, g, b, X, Y, Z);
-    X *= intensity;
-    Y *= intensity;
-    Z *= intensity;
 
-    // Scale target XYZ into the physical luminance space of the emitters
-    // so that weights [0..1] are meaningful fractions of each emitter's max output.
-    float maxY = 0.0f;
-    for (const auto& e : emitters) maxY += e.fullY;
-    if (maxY > 0.0f) { X *= maxY; Y *= maxY; Z *= maxY; }
-
-    // Solve for emitter weights
+    // Solve for emitter weights that reproduce this chromaticity
     Array<float> weights;
     solveEmitterWeights(emitters, X, Y, Z, weights);
+
+    // Normalize weights according to the caller's chosen mode
+    normalizeWeights(emitters, weights, intensity, constantLuminance);
 
     // Convert weights to DMX levels and populate result
     for (int i = 0; i < emitters.size() && i < weights.size(); i++) {

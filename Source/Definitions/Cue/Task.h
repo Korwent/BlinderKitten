@@ -59,6 +59,11 @@ public:
     static Task* create(var params) { return new Task(params); }
 
     void autoName();
+    void watchTargetUserName();
+
+    void parameterValueChanged(Parameter* p) override;
+
+    Parameter* watchedUserName = nullptr;
 
     static void triggerGivenTask(Task* parent, String targetType, int targetId, String action, double targetValue, int id);
 };

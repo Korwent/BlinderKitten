@@ -14,6 +14,7 @@
 #include "BKEngine.h"
 #include "Definitions/Fixture/Fixture.h"
 #include "Definitions/Group/Group.h"
+#include "Definitions/Group/GroupManager.h"
 #include "Definitions/Tracker/Tracker.h"
 #include "Definitions/BKPathPreset/BKPathPreset.h"
 #include "Definitions/Programmer/Programmer.h"
@@ -51,8 +52,18 @@ LayoutViewer::LayoutViewer() :
 	addAndMakeVisible(exportBtn);
 	exportBtn.onClick = [this](){ exportToPNG();};
 
+	clearButton.setButtonText("Clear");
+	clearButton.setWantsKeyboardFocus(false);
+	clearButton.setColour(TextButton::buttonColourId, Colour(100, 40, 40));
+	clearButton.setColour(TextButton::textColourOffId, Colours::white);
+	clearButton.onClick = [this]() {
+		UserInputManager::getInstance()->processInput("Clear");
+	};
+	addAndMakeVisible(clearButton);
+
 	rebuildLayoutsList();
 	LayoutManager::getInstance()->addAsyncManagerListener(this);
+	GroupManager::getInstance()->addAsyncManagerListener(this);
 
 	engine = dynamic_cast<BKEngine*>(BKEngine::mainEngine);
 	engine->layoutViewerLayout->addParameterListener(this);
@@ -68,6 +79,7 @@ LayoutViewer::~LayoutViewer()
 		selectedLayout->removeChangeListener(this);
 	}
 	if (LayoutManager::getInstanceWithoutCreating()) LayoutManager::getInstance()->removeAsyncManagerListener(this);
+	if (GroupManager::getInstanceWithoutCreating()) GroupManager::getInstance()->removeAsyncManagerListener(this);
 }
 
 
@@ -203,44 +215,23 @@ void LayoutViewer::selectLayout(Layout* l)
 	repaint();
 }
 
+void LayoutViewer::newMessage(const GroupManager::ManagerEvent& e)
+{
+	rebuildGroupList();
+	resized();
+}
+
 void LayoutViewer::rebuildGroupList()
 {
 	groupButtons.clear();
 	groupIds.clear();
 
-	if (selectedLayout == nullptr) return;
-
-	Array<int> seen;
-	for (auto& path : selectedLayout->paths.items) {
-		for (auto& sel : path->selection.items) {
-			if (sel->targetType->getValue().toString() == "group") {
-				int gid = sel->valueFrom->intValue();
-				if (!seen.contains(gid)) {
-					seen.add(gid);
-				}
-				if (sel->thru->boolValue()) {
-					int gidTo = sel->valueTo->intValue();
-					for (int i = jmin(gid, gidTo); i <= jmax(gid, gidTo); i++) {
-						if (!seen.contains(i)) {
-							seen.add(i);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	seen.sort();
-	for (int i = 0; i < seen.size(); i++) {
-		int gid = seen[i];
-		Group* grp = Brain::getInstance()->getGroupById(gid);
-		String label = "Group " + String(gid);
-		if (grp != nullptr && grp->userName->stringValue().isNotEmpty()) {
-			label = grp->userName->stringValue();
-		}
-		else if (grp != nullptr) {
-			label = grp->niceName;
-		}
+	for (auto& grp : GroupManager::getInstance()->items) {
+		if (grp == nullptr) continue;
+		int gid = grp->id->intValue();
+		String label = grp->userName->stringValue().isNotEmpty()
+			? grp->userName->stringValue()
+			: grp->niceName;
 		TextButton* btn = new TextButton(label);
 		btn->setWantsKeyboardFocus(false);
 		btn->setClickingTogglesState(false);
@@ -297,11 +288,10 @@ void LayoutViewer::resized()
 	viewCoords.setBounds(hr.removeFromLeft(80).reduced(2));
 	exportBtn.setBounds(hr.removeFromLeft(80).reduced(2));
 
-	if (groupButtons.size() > 0) {
-		Rectangle<int> groupArea = r.removeFromLeft(groupListWidth);
-		for (int i = 0; i < groupButtons.size(); i++) {
-			groupButtons[i]->setBounds(groupArea.removeFromTop(24).reduced(2));
-		}
+	Rectangle<int> groupArea = r.removeFromLeft(groupListWidth);
+	clearButton.setBounds(groupArea.removeFromBottom(24).reduced(2));
+	for (int i = 0; i < groupButtons.size(); i++) {
+		groupButtons[i]->setBounds(groupArea.removeFromTop(24).reduced(2));
 	}
 
 	if (selectedLayout != nullptr) {

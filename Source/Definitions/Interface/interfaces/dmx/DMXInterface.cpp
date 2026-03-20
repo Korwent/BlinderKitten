@@ -38,6 +38,7 @@ DMXInterface::DMXInterface() :
 	dmxConnected->isSavable = false;
 
 	useCalibration = addBoolParameter("Use Calibration", "Use calibrated color output for fixtures with color calibration data", false);
+	constantLuminance = addBoolParameter("Constant Luminance", "When enabled, calibrated color output maintains constant perceived brightness across all tints. When disabled, the dominant emitter always runs at full requested intensity.", false);
 
 	channelTestingMode = addBoolParameter("Channel Testing Mode", "Is testing with the Channel view ?", false);
 	channelTestingMode->hideInEditor = true;

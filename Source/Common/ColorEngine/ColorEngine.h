@@ -68,7 +68,8 @@ public:
     // channels on a SubFixture. Returns false if not enough calibration data.
     static bool applyTargetColorToSubFixture(SubFixture* sf,
                                               float r, float g, float b,
-                                              float intensity);
+                                              float intensity,
+                                              bool constantLuminance = false);
 
     // High-level: read current emitter values on a SubFixture and compute the
     // resulting CIE XYZ (for accurate color preview). Returns black if uncalibrated.
@@ -80,7 +81,8 @@ public:
     static bool computeEmitterDMXLevels(SubFixture* sf,
                                          float r, float g, float b,
                                          float intensity,
-                                         HashMap<SubFixtureChannel*, float>& outLevels);
+                                         HashMap<SubFixtureChannel*, float>& outLevels,
+                                         bool constantLuminance = false);
 
 private:
     // Helper: 3x3 direct solve using Cramer's rule

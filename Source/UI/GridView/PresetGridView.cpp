@@ -18,6 +18,8 @@
 #include "Definitions/ColorSwatch/ColorSwatch.h"
 #include "Definitions/ColorSwatch/ColorSwatchValue.h"
 #include "Definitions/ChannelFamily/ChannelType/ChannelType.h"
+#include "Definitions/ColorPalette/ColorPalette.h"
+#include "Definitions/ColorPalette/ColorPaletteItem.h"
 #include "DataTransferManager/DataTransferManager.h"
 
 //==============================================================================
@@ -73,54 +75,22 @@ void PresetGridView::newMessage(const PresetManager::ManagerEvent& e)
 
 bool PresetGridView::isInterestedInDragSource(const SourceDetails& source)
 {
-    if (source.description.getProperty("type", "") == "GridViewButton")
-        return source.description.getProperty("targetType", "") == "colorswatch";
+    if (source.description.getProperty("type", "") == "GridViewButton") {
+        String tt = source.description.getProperty("targetType", "");
+        return tt == "colorswatch" || tt == "colorpaletteitem" || tt == "colorpalette";
+    }
     return false;
 }
 
-void PresetGridView::itemDropped(const SourceDetails& source)
+static void applySwatchToPreset(Preset* preset, ColorSwatch* swatch)
 {
-    int swatchId = source.description.getProperty("id", 0);
-    ColorSwatch* swatch = Brain::getInstance()->getColorSwatchById(swatchId);
-    if (swatch == nullptr) return;
-
-    // Find which grid button is at the drop position
-    GridViewButton* btn = nullptr;
-    for (auto* b : gridButtons)
-    {
-        if (b->getBounds().contains(source.localPosition.toInt()))
-        {
-            btn = b;
-            break;
-        }
-    }
-    if (btn == nullptr) return;
-
-    int slotIndex = gridButtons.indexOf(btn);
-    if (slotIndex < 0) return;
-    int presetId = slotIndex + 1;
-
-    // Get or create the preset at this slot
-    Preset* preset = Brain::getInstance()->getPresetById(presetId);
-    if (preset == nullptr)
-    {
-        preset = PresetManager::getInstance()->addItem();
-        preset->id->setValue(presetId);
-    }
-
-    // Rename to swatch name
     preset->userName->setValue(swatch->userName->getValue());
-
-    // Set type to "Same Channels type" (value 4) so it applies to all fixtures
     preset->presetType->setValueWithData(4);
-
-    // Replace all channel values with the swatch's values
     preset->subFixtureValues.clear();
     PresetSubFixtureValues* sfv = preset->subFixtureValues.addItem();
     sfv->targetFixtureId->setValue(0);
     sfv->targetSubFixtureId->setValue(0);
     sfv->values.clear();
-
     for (int i = 0; i < swatch->values.items.size(); i++)
     {
         ColorSwatchValue* csv = swatch->values.items[i];
@@ -130,7 +100,63 @@ void PresetGridView::itemDropped(const SourceDetails& source)
         pv->param->setValueFromTarget(ct);
         pv->paramValue->setValue(csv->paramValue->getValue());
     }
-
     preset->computeValues();
-    preset->selectThis();
+}
+
+static Preset* getOrCreatePreset(int presetId)
+{
+    Preset* preset = Brain::getInstance()->getPresetById(presetId);
+    if (preset == nullptr)
+    {
+        preset = PresetManager::getInstance()->addItem();
+        preset->id->setValue(presetId);
+    }
+    return preset;
+}
+
+void PresetGridView::itemDropped(const SourceDetails& source)
+{
+    String targetType = source.description.getProperty("targetType", "");
+
+    // Find the drop slot
+    int startSlotIndex = -1;
+    for (int i = 0; i < gridButtons.size(); i++)
+    {
+        if (gridButtons[i]->getBounds().contains(source.localPosition.toInt()))
+        {
+            startSlotIndex = i;
+            break;
+        }
+    }
+    if (startSlotIndex < 0) return;
+
+    if (targetType == "colorpalette")
+    {
+        int paletteId = source.description.getProperty("id", 0);
+        ColorPalette* palette = Brain::getInstance()->getColorPaletteById(paletteId);
+        if (palette == nullptr) return;
+
+        for (int itemIdx = 0; itemIdx < palette->items.items.size(); itemIdx++)
+        {
+            int slotIndex = startSlotIndex + itemIdx;
+            if (slotIndex >= numberOfCells) break;
+
+            int swatchId = palette->items.items[itemIdx]->colorSwatchId->getValue();
+            ColorSwatch* swatch = Brain::getInstance()->getColorSwatchById(swatchId);
+            if (swatch == nullptr) continue;
+
+            applySwatchToPreset(getOrCreatePreset(slotIndex + 1), swatch);
+        }
+    }
+    else
+    {
+        // Single swatch drop (colorswatch or colorpaletteitem)
+        int swatchId = source.description.getProperty("id", 0);
+        ColorSwatch* swatch = Brain::getInstance()->getColorSwatchById(swatchId);
+        if (swatch == nullptr) return;
+
+        Preset* preset = getOrCreatePreset(startSlotIndex + 1);
+        applySwatchToPreset(preset, swatch);
+        preset->selectThis();
+    }
 }

@@ -223,8 +223,9 @@ void SubFixtureChannel::writeValue(float v) {
 								}
 								
 								// Compute calibrated DMX levels for all emitters 
+								bool constLum = out->constantLuminance != nullptr && out->constantLuminance->boolValue();
 								HashMap<SubFixtureChannel*, float> emitterDMXLevels;
-								ColorEngine::computeEmitterDMXLevels(parentSubFixture, r, g, b, intensity, emitterDMXLevels);
+								ColorEngine::computeEmitterDMXLevels(parentSubFixture, r, g, b, intensity, emitterDMXLevels, constLum);
 								
 								// If this channel is in the calibrated results, use that value instead
 								if (emitterDMXLevels.contains(this)) {

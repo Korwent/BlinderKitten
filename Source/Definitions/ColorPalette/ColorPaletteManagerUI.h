@@ -12,8 +12,16 @@
 #include "JuceHeader.h"
 #include "ColorPalette.h"
 
+class ColorPaletteListItemUI : public BaseItemUI<ColorPalette>
+{
+public:
+    ColorPaletteListItemUI(ColorPalette* palette) : BaseItemUI<ColorPalette>(palette) {}
+    ~ColorPaletteListItemUI() {}
+    void mouseDrag(const MouseEvent& e) override;
+};
+
 class ColorPaletteManagerUI :
-    public BaseManagerShapeShifterUI<BaseManager<ColorPalette>, ColorPalette, BaseItemUI<ColorPalette>>
+    public BaseManagerShapeShifterUI<BaseManager<ColorPalette>, ColorPalette, ColorPaletteListItemUI>
 {
 public:
     ColorPaletteManagerUI(const String& contentName);

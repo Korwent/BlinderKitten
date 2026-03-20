@@ -33,6 +33,7 @@ public:
     std::unique_ptr<DMXDevice> dmxDevice;
     BoolParameter* dmxConnected;
     BoolParameter* useCalibration;  // Enable per-interface calibration coloring
+    BoolParameter* constantLuminance; // Constant perceived brightness across tints when calibration is active
 
     std::unique_ptr<ControllableContainer> thruManager;
     BoolParameter * channelTestingMode;

@@ -201,6 +201,7 @@ bool ColorEngine::solveEmitterWeights(Array<EmitterCalibration>& emitters,
     // n > 3: Try all C(n,3) combinations, pick the one with minimum total power in gamut
     float bestTotalPower = 1e9f;
     Array<float> bestWeights;
+    int bestI = 0, bestJ = 1, bestK = 2;
     bool foundValid = false;
 
     for (int i = 0; i < n; i++) {
@@ -228,6 +229,7 @@ bool ColorEngine::solveEmitterWeights(Array<EmitterCalibration>& emitters,
                         if (totalPower < bestTotalPower) {
                             bestTotalPower = totalPower;
                             bestWeights = weights;
+                            bestI = i; bestJ = j; bestK = k;
                             foundValid = true;
                         }
                     }
@@ -237,27 +239,10 @@ bool ColorEngine::solveEmitterWeights(Array<EmitterCalibration>& emitters,
     }
 
     if (foundValid) {
-        // Fill result: only the selected emitters get non-zero weights
-        int idx = 0;
-        for (int i = 0; i < n; i++) {
-            // Find which emitter this is
-            bool isInBest = false;
-            // This simple approach doesn't track which emitters are in the best combo
-            // For correctness, we'll use a different approach: always try to maximize luminance
-            // by picking dominant emitters
-            outWeights.add(0.0f);
-        }
-
-        // Simplified: just apply all weights to all emitters in best combo
-        // In production, track the indices properly
-        // For now, fallback to equal distribution
-        for (int i = 0; i < n; i++) {
-            if (i < 3) {
-                outWeights.set(i, bestWeights[i]);
-            } else {
-                outWeights.add(0.0f);
-            }
-        }
+        for (int i = 0; i < n; i++) outWeights.add(0.0f);
+        outWeights.set(bestI, bestWeights[0]);
+        outWeights.set(bestJ, bestWeights[1]);
+        outWeights.set(bestK, bestWeights[2]);
         return true;
     }
 
@@ -272,67 +257,61 @@ float ColorEngine::weightToDMXLevel(const EmitterCalibration& emitter, float wei
 {
     weight = jlimit(0.0f, 1.0f, weight);
 
-    if (emitter.typeChannel == nullptr || !emitter.typeChannel->calibrationDimmingCurve.enabled->boolValue()) {
-        // No dimming curve: linear
-        return weight;
-    }
-
-    // Binary search for the DMX level that produces the target weight
-    float lo = 0.0f, hi = 1.0f;
-    for (int i = 0; i < 20; i++) {  // 20 iterations → precision < 1e-6
-        float mid = (lo + hi) * 0.5f;
-        float intensity = emitter.typeChannel->calibrationDimmingCurve.getValueAtPosition(mid);
-        if (intensity < weight) {
-            lo = mid;
-        } else {
-            hi = mid;
-        }
-    }
-
-    return (lo + hi) * 0.5f;
+    // No calibration dimming curve implemented yet — use linear mapping.
+    // When calibrationDimmingCurve is added to FixtureTypeChannel, add
+    // inverse lookup here.
+    return weight;
 }
 
 // ===== High-Level API =====
 
+static void normalizeWeights(Array<EmitterCalibration>& emitters, Array<float>& weights,
+                             float intensity, bool constantLuminance)
+{
+    if (constantLuminance) {
+        float solvedY = 0.0f;
+        float maxY = 0.0f;
+        for (int i = 0; i < emitters.size() && i < weights.size(); i++) {
+            solvedY += emitters[i].fullY * weights[i];
+            maxY += emitters[i].fullY;
+        }
+        if (solvedY > 0.0f && maxY > 0.0f) {
+            float scale = intensity / solvedY;
+            float maxW = 0.0f;
+            for (int i = 0; i < weights.size(); i++)
+                maxW = jmax(maxW, weights[i] * scale);
+            if (maxW > 1.0f) scale /= maxW;
+            for (int i = 0; i < weights.size(); i++)
+                weights.set(i, weights[i] * scale);
+        }
+    } else {
+        float maxW = 0.0f;
+        for (float w : weights) maxW = jmax(maxW, w);
+        if (maxW > 0.0f) {
+            for (int i = 0; i < weights.size(); i++)
+                weights.set(i, (weights[i] / maxW) * intensity);
+        }
+    }
+}
+
 bool ColorEngine::applyTargetColorToSubFixture(SubFixture* sf,
                                                 float r, float g, float b,
-                                                float intensity)
+                                                float intensity,
+                                                bool constantLuminance)
 {
     Array<EmitterCalibration> emitters = getCalibrations(sf);
     if (emitters.size() < 3) return false;
 
-    // Convert target sRGB + intensity to CIE XYZ
     float X, Y, Z;
     sRGBtoXYZ(r, g, b, X, Y, Z);
 
-    // Scale by output intensity
-    X *= intensity;
-    Y *= intensity;
-    Z *= intensity;
-
-    // Scale by emitter luminance
-    float maxY = 0.0f;
-    for (const auto& e : emitters) {
-        maxY += e.fullY;
-    }
-
-    if (maxY > 0.0f) {
-        X = X * maxY;
-        Y = Y * maxY;
-        Z = Z * maxY;
-    }
-
-    // Solve for weights
     Array<float> weights;
-    if (!solveEmitterWeights(emitters, X, Y, Z, weights)) {
-        // Out of gamut — still apply the best approximation
-    }
+    solveEmitterWeights(emitters, X, Y, Z, weights);
 
-    // Convert weights to DMX levels and write to channels
+    normalizeWeights(emitters, weights, intensity, constantLuminance);
+
     for (int i = 0; i < emitters.size() && i < weights.size(); i++) {
         float dmxLevel = weightToDMXLevel(emitters[i], weights[i]);
-        // NOTE: In the actual system, these values would be set via Commands/Programmers
-        // This is a placeholder; the integration with Command system will handle the actual setting
     }
 
     return true;
@@ -348,14 +327,10 @@ Colour ColorEngine::getCalibrationOutputColor(SubFixture* sf)
     for (const auto& e : emitters) {
         if (e.channel == nullptr) continue;
 
-        float dmxLevel = e.channel->currentValue;
-        float relativeIntensity;
-
-        if (e.typeChannel != nullptr && e.typeChannel->calibrationDimmingCurve.enabled->boolValue()) {
-            relativeIntensity = e.typeChannel->calibrationDimmingCurve.getValueAtPosition(dmxLevel);
-        } else {
-            relativeIntensity = dmxLevel;
-        }
+        // Use currentValue directly as relative intensity (linear).
+        // When calibrationDimmingCurve is added to FixtureTypeChannel,
+        // apply it here to convert DMX level → physical intensity.
+        float relativeIntensity = e.channel->currentValue;
 
         totalX += e.fullX * relativeIntensity;
         totalY += e.fullY * relativeIntensity;

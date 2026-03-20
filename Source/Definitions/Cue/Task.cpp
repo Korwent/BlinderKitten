@@ -11,12 +11,18 @@
 #include "JuceHeader.h"
 #include "Task.h"
 #include "Brain.h"
+#include "Cue.h"
 #include "Definitions/Cuelist/Cuelist.h"
 #include "Definitions/Effect/Effect.h"
 #include "Definitions/Carousel/Carousel.h"
 #include "Definitions/Mapper/Mapper.h"
 #include "Definitions/Tracker/Tracker.h"
 #include "Definitions/Bundle/Bundle.h"
+#include "Definitions/Preset/Preset.h"
+#include "Definitions/Group/Group.h"
+#include "Definitions/Fixture/Fixture.h"
+#include "Definitions/TimingPreset/TimingPreset.h"
+#include "Definitions/Actions/InputPanelAction.h"
 
 Task::Task(var params) :
 	BaseItem(params.getProperty("name", "Task")),
@@ -109,11 +115,16 @@ Task::Task(var params) :
 
 Task::~Task()
 {
+	if (watchedUserName != nullptr)
+		watchedUserName->removeParameterListener(this);
 }
 
 void Task::onContainerParameterChangedInternal(Parameter* c) {
 	if (c == targetType  || c == cuelistAction || c == effectAction|| c == carouselAction || c == mapperAction || c == trackerAction || c == bundleAction || c == targetThru) {
 		updateDisplay();
+	}
+	if (c == targetType) {
+		watchTargetUserName();
 	}
 	autoName();
 }
@@ -273,8 +284,82 @@ void Task::onControllableFeedbackUpdateInternal(ControllableContainer* cc, Contr
 {
 	BaseItem::onControllableFeedbackUpdateInternal(cc, c);
 	if (!enabled->boolValue()) return;
+	// Re-evaluate the watched userName whenever anything in the action manager changes
+	// (e.g. a "Use another" action is added, or its target ID/type changes)
+	watchTargetUserName();
 }
 
+
+void Task::watchTargetUserName()
+{
+	// Remove listener from the previously watched parameter
+	if (watchedUserName != nullptr)
+	{
+		watchedUserName->removeParameterListener(this);
+		watchedUserName = nullptr;
+	}
+
+	// Only applicable when this task's type is "Generic actions"
+	if (targetType->getValueData().toString() != "action") return;
+
+	// Search the action manager for the first "Use another" InputPanelAction
+	for (Action* a : actionManager.items)
+	{
+		InputPanelAction* ipa = dynamic_cast<InputPanelAction*>(a);
+		if (ipa == nullptr || ipa->actionType != InputPanelAction::IP_USEANOTHER) continue;
+
+		String type = ipa->useAnotherTargetType->stringValue();
+		int targetObjId = ipa->useAnotherTargetId->intValue();
+
+		StringParameter* found = nullptr;
+		if (type == "Preset")
+		{
+			Preset* obj = Brain::getInstance()->getPresetById(targetObjId);
+			if (obj != nullptr) found = obj->userName;
+		}
+		else if (type == "Timing Preset")
+		{
+			TimingPreset* obj = Brain::getInstance()->getTimingPresetById(targetObjId);
+			if (obj != nullptr) found = obj->userName;
+		}
+		else if (type == "Fixture")
+		{
+			Fixture* obj = Brain::getInstance()->getFixtureById(targetObjId);
+			if (obj != nullptr) found = obj->userName;
+		}
+		else if (type == "Group")
+		{
+			Group* obj = Brain::getInstance()->getGroupById(targetObjId);
+			if (obj != nullptr) found = obj->userName;
+		}
+
+		if (found != nullptr)
+		{
+			watchedUserName = found;
+			watchedUserName->addParameterListener(this);
+			// Apply the name to the parent cue immediately
+			if (parentContainer != nullptr && parentContainer->parentContainer != nullptr)
+			{
+				Cue* cue = dynamic_cast<Cue*>(parentContainer->parentContainer.get());
+				if (cue != nullptr) cue->setNiceName(watchedUserName->stringValue());
+			}
+		}
+		break; // Only handle the first "Use another" action
+	}
+}
+
+void Task::parameterValueChanged(Parameter* p)
+{
+	ControllableContainer::parameterValueChanged(p);
+	if (p == watchedUserName)
+	{
+		if (parentContainer != nullptr && parentContainer->parentContainer != nullptr)
+		{
+			Cue* cue = dynamic_cast<Cue*>(parentContainer->parentContainer.get());
+			if (cue != nullptr) cue->setNiceName(watchedUserName->stringValue());
+		}
+	}
+}
 
 void Task::autoName()
 {

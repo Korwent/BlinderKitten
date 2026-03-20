@@ -1043,6 +1043,8 @@ void BKEngine::exportSelection()
 	data.getDynamicObject()->setProperty(FixtureManager::getInstance()->shortName, FixtureManager::getInstance()->getExportSelectionData());
 	data.getDynamicObject()->setProperty(GroupManager::getInstance()->shortName, GroupManager::getInstance()->getExportSelectionData());
 	data.getDynamicObject()->setProperty(PresetManager::getInstance()->shortName, PresetManager::getInstance()->getExportSelectionData());
+	data.getDynamicObject()->setProperty(ColorSwatchManager::getInstance()->shortName, ColorSwatchManager::getInstance()->getExportSelectionData());
+	data.getDynamicObject()->setProperty(ColorPaletteManager::getInstance()->shortName, ColorPaletteManager::getInstance()->getExportSelectionData());
 	data.getDynamicObject()->setProperty(CommandManager::getInstance()->shortName, CommandManager::getInstance()->getExportSelectionData());
 	data.getDynamicObject()->setProperty(CuelistManager::getInstance()->shortName, CuelistManager::getInstance()->getExportSelectionData());
 	data.getDynamicObject()->setProperty(ProgrammerManager::getInstance()->shortName, ProgrammerManager::getInstance()->getExportSelectionData());

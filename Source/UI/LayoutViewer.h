@@ -11,6 +11,7 @@
 #pragma once
 #include "JuceHeader.h"
 #include "Definitions/Layout/LayoutManager.h"
+#include "Definitions/Group/GroupManager.h"
 
 class BKEngine;
 
@@ -19,6 +20,7 @@ class LayoutViewer :
     public ComboBox::Listener,
     public ToggleButton::Listener,
     public LayoutManager::AsyncListener,
+    public GroupManager::AsyncListener,
     public ChangeListener,
     public Timer,
     public DragAndDropTarget,
@@ -57,6 +59,7 @@ public:
     //void setCurrentLayout(Layout* l);
     void rebuildLayoutsList();
     void newMessage(const LayoutManager::ManagerEvent& e) override;
+    void newMessage(const GroupManager::ManagerEvent& e) override;
 
     Colour getClickColour(BKPath* path, ClicAction action);
     Colour getClickColour(SubFixture* sf);
@@ -108,6 +111,7 @@ public:
 
     OwnedArray<TextButton> groupButtons;
     Array<int> groupIds;
+    TextButton clearButton;
     int groupListWidth = 100;
     void rebuildGroupList();
     void updateGroupButtonStates();
